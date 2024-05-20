@@ -162,6 +162,25 @@ body {
   margin-left: 17%;
 }
 
+.content-help{
+  position: fixed;
+  float: bottom;
+  bottom: 10px;
+  left: 80%;
+  z-index: 20;
+  background-color: #37404d;
+  padding: 15px 5px 15px 5px;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 4px 0px rgba(255, 255, 250, 0.5);
+}
+
+
+.content-help button{
+  cursor: pointer;
+}
+
 .content-details {
   width: 16%;
   padding: 0px 10px 0px 10px;
@@ -240,8 +259,6 @@ body {
   border: none;
   height: 25px;
 }
-
-
 
 .content-details-item summary{
     display: flex;

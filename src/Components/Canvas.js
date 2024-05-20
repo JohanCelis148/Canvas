@@ -189,16 +189,25 @@ const downloadHtmlFile = (html) => {
 const CanvasEditor = () => {
   const [items, setItems] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-  const [expandedPanelId, setExpandedPanelId] = useState(null);
+  const [expandedPanelId, setExpandedPanelId] = useState(null);  
+  const [showMargin, setShowMargin] = useState(false); // Estado para la visibilidad de la margen
+  const [showGrid, setShowGrid] = useState(false);//Estado del grid
 
   const [scale, setScale] = useState(1);
-  console.log(scale);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const trRef = useRef();
 
   const minScale = 0.5; // Permite hacer zoom out hasta la mitad del tamaño original
   const maxScale = 1; // El zoom original, no permite hacer zoom in más allá de esto
+
+  const toggleMargin = () => {
+    setShowMargin((prev) => !prev); // Alterna la visibilidad de la margen
+  };
+
+  const toggleGrid = () => {
+    setShowGrid((prev) => !prev); // Alterna la visibilidad de la cuadrícula
+  };
 
   const zoomIn = () => {
     if (scale < maxScale) {
@@ -219,189 +228,189 @@ const CanvasEditor = () => {
   };
 
   useEffect(() => {
-    // Verifica si el elemento seleccionado aún existe
-    const selectedNode = items.find((item) => item.id === selectedId);
-    if (selectedNode && trRef.current) {
-      trRef.current.nodes([selectedNode.shapeRef.current]);
-      trRef.current.getLayer().batchDraw();
-    } else {
-      // Si no existe, asegúrate de que no hay ningún nodo en el Transformer
-      if (trRef.current) {
-        trRef.current.nodes([]);
-        trRef.current.getLayer().batchDraw();
-      }
-    }
-  }, [selectedId, items]);
-
-  const handleSaveTemplate = () => {
-    const html = generateHTML(items);
-    downloadHtmlFile(html);
-  };
-
-  const addText = () => {
-    const newText = {
-      type: "text",
-      x: 100,
-      y: 100,
-      text: "Nuevo Texto",
-      fontSize: 20,
-      textColor: "black",
-      fontFamily: "Arial",
-      id: `✎ Texto ${items.length}`,
-      draggable: true,
-      width: "auto",
-      height: "auto",
-      lineHeight: 1.2,
-      shapeRef: React.createRef(),
-      dragBoundFunc: (pos) => dragBoundFunc(pos, newText.shapeRef.current),
-    };
-    setItems([...items, newText]);
-  };
-
-  const addRect = () => {
-    const newRect = {
-      type: "rect",
-      x: 180,
-      y: 180,
-      width: 100,
-      height: 50,
-      fillColor: "#C5C5C5",
-      id: `☐ Rectangulo ${items.length}`,
-      draggable: true,
-      shapeRef: React.createRef(),
-      dragBoundFunc: (pos) => dragBoundFunc(pos, newRect.shapeRef.current),
-    };
-    setItems([...items, newRect]);
-  };
-
-  const addVariable = (name) => {
-    const newVariable = {
-      type: "text",
-      x: 150,
-      y: 150,
-      text: name,
-      fontSize: 20,
-      textColor: "#8e50f6",
-      id: `♦︎ ${name} ${items.length}`,
-      draggable: true,
-      width: "auto",
-      // height: "auto",
-      shapeRef: React.createRef(),
-      dragBoundFunc: (pos) => dragBoundFunc(pos, newVariable.shapeRef.current),
-    };
-    setItems([...items, newVariable]);
-  };
-
-  const updateItem = (id, updatedProps) => {
-    const updatedItems = items.map((item) =>
-      item.id === id ? updatedProps : item
-    );
-    setItems(updatedItems);
-  };
-
-  const deleteItem = (id) => {
-    const updatedItems = items.filter((item) => item.id !== id);
-    setItems(updatedItems);
-    if (selectedId === id) {
-      setSelectedId(null);
-    }
-  };
-
-  const updateTextSize = (item) => {
-    const textShape = item.shapeRef.current;
-    if (textShape) {
-      // Actualiza el alto del objeto de texto para que coincida con el alto del texto visible
-      textShape.height(textShape.textHeight());
-    }
-  };
-
-  const handleTextChange = (id, newText) => {
-    const updatedItems = items.map((item) =>
-      item.id === id ? { ...item, text: newText } : item
-    );
-    setItems(updatedItems);
-    updateTextSize(updatedItems.find((item) => item.id === id));
-  };
-
-  // Función que maneja el evento de teclado
-  const handleKeyPress = (event) => {
-    if (event.key === "Delete") {
-      if (selectedId !== null) {
-        Swal.fire({
-          // title: "¿Estás seguro?",
-          text: "¿Estás seguro de eliminar la seleccion?",
-          // icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: "#37404d",
-          cancelButtonColor: "#ff1d63",
-          confirmButtonText: "Eliminar",
-          cancelButtonText: "Cancelar",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            deleteItem(selectedId);
+        // Verifica si el elemento seleccionado aún existe
+        const selectedNode = items.find((item) => item.id === selectedId);
+        if (selectedNode && trRef.current) {
+          trRef.current.nodes([selectedNode.shapeRef.current]);
+          trRef.current.getLayer().batchDraw();
+        } else {
+          // Si no existe, asegúrate de que no hay ningún nodo en el Transformer
+          if (trRef.current) {
+            trRef.current.nodes([]);
+            trRef.current.getLayer().batchDraw();
           }
-        });
-      }
-    }
-  };
-
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosClient.get("/variables");
-        setData(response.data);
-      } catch (error) {
-        console.error("Error al obtener los datos:", error);
-      }
-    };
-
-    fetchData();
-  }, []); // El arreglo vacío asegura que el efecto se ejecute solo una vez
-
-  // Agrega el event listener cuando el componente se monta
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyPress);
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [selectedId]); // Asegúrate de que useEffect se actualice si selectedId cambia
-
-  //   tamaños del lienzo
-  const pixelsPerInch = 96; // DPI estándar
-  const letterWidthInches = 8.5; // Ancho en pulgadas para papel tamaño carta
-  const letterHeightInches = 11; // Alto en pulgadas para papel tamaño carta
-
-  const width = letterWidthInches * pixelsPerInch; // 816 px
-  const height = letterHeightInches * pixelsPerInch; // 1056 px
-
-  const dragBoundFunc = (pos, node) => {
-    let newX = pos.x;
-    let newY = pos.y;
-
-    // Calcula los límites basados en las dimensiones del elemento
-    const box = node.getClientRect();
-    const offsetX = node.offsetX() ? node.offsetX() : 0;
-    const offsetY = node.offsetY() ? node.offsetY() : 0;
-
-    if (box.x < 0) {
-      newX = offsetX; // Ajusta a la izquierda
-    } else if (box.x + box.width > width) {
-      newX = width - box.width + offsetX; // Ajusta a la derecha
-    }
-
-    if (box.y < 0) {
-      newY = offsetY; // Ajusta arriba
-    } else if (box.y + box.height > height) {
-      newY = height - box.height + offsetY; // Ajusta abajo
-    }
-
-    return {
-      x: newX,
-      y: newY,
-    };
-  };
+        }
+      }, [selectedId, items]);
+    
+      const handleSaveTemplate = () => {
+        const html = generateHTML(items);
+        downloadHtmlFile(html);
+      };
+    
+      const addText = () => {
+        const newText = {
+          type: "text",
+          x: 100,
+          y: 100,
+          text: "Nuevo Texto",
+          fontSize: 20,
+          textColor: "black",
+          fontFamily: "Arial",
+          id: `✎ Texto ${items.length}`,
+          draggable: true,
+          width: "auto",
+          height: "auto",
+          lineHeight: 1.2,
+          shapeRef: React.createRef(),
+          dragBoundFunc: (pos) => dragBoundFunc(pos, newText.shapeRef.current),
+        };
+        setItems([...items, newText]);
+      };
+    
+      const addRect = () => {
+        const newRect = {
+          type: "rect",
+          x: 180,
+          y: 180,
+          width: 100,
+          height: 50,
+          fillColor: "#C5C5C5",
+          id: `☐ Rectangulo ${items.length}`,
+          draggable: true,
+          shapeRef: React.createRef(),
+          dragBoundFunc: (pos) => dragBoundFunc(pos, newRect.shapeRef.current),
+        };
+        setItems([...items, newRect]);
+      };
+    
+      const addVariable = (name) => {
+        const newVariable = {
+          type: "text",
+          x: 150,
+          y: 150,
+          text: name,
+          fontSize: 20,
+          textColor: "#8e50f6",
+          id: `♦︎ ${name} ${items.length}`,
+          draggable: true,
+          width: "auto",
+          // height: "auto",
+          shapeRef: React.createRef(),
+          dragBoundFunc: (pos) => dragBoundFunc(pos, newVariable.shapeRef.current),
+        };
+        setItems([...items, newVariable]);
+      };
+    
+      const updateItem = (id, updatedProps) => {
+        const updatedItems = items.map((item) =>
+          item.id === id ? updatedProps : item
+        );
+        setItems(updatedItems);
+      };
+    
+      const deleteItem = (id) => {
+        const updatedItems = items.filter((item) => item.id !== id);
+        setItems(updatedItems);
+        if (selectedId === id) {
+          setSelectedId(null);
+        }
+      };
+    
+      const updateTextSize = (item) => {
+        const textShape = item.shapeRef.current;
+        if (textShape) {
+          // Actualiza el alto del objeto de texto para que coincida con el alto del texto visible
+          textShape.height(textShape.textHeight());
+        }
+      };
+    
+      const handleTextChange = (id, newText) => {
+        const updatedItems = items.map((item) =>
+          item.id === id ? { ...item, text: newText } : item
+        );
+        setItems(updatedItems);
+        updateTextSize(updatedItems.find((item) => item.id === id));
+      };
+    
+      // Función que maneja el evento de teclado
+      const handleKeyPress = (event) => {
+        if (event.key === "Delete") {
+          if (selectedId !== null) {
+            Swal.fire({
+              // title: "¿Estás seguro?",
+              text: "¿Estás seguro de eliminar la seleccion?",
+              // icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: "#37404d",
+              cancelButtonColor: "#ff1d63",
+              confirmButtonText: "Eliminar",
+              cancelButtonText: "Cancelar",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                deleteItem(selectedId);
+              }
+            });
+          }
+        }
+      };
+    
+      const [data, setData] = useState(null);
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axiosClient.get("/variables");
+            setData(response.data);
+          } catch (error) {
+            console.error("Error al obtener los datos:", error);
+          }
+        };
+    
+        fetchData();
+      }, []); // El arreglo vacío asegura que el efecto se ejecute solo una vez
+    
+      // Agrega el event listener cuando el componente se monta
+      useEffect(() => {
+        window.addEventListener("keydown", handleKeyPress);
+        return () => {
+          window.removeEventListener("keydown", handleKeyPress);
+        };
+      }, [selectedId]); // Asegúrate de que useEffect se actualice si selectedId cambia
+    
+      //   tamaños del lienzo
+      const pixelsPerInch = 96; // DPI estándar
+      const letterWidthInches = 8.5; // Ancho en pulgadas para papel tamaño carta
+      const letterHeightInches = 11; // Alto en pulgadas para papel tamaño carta
+    
+      const width = letterWidthInches * pixelsPerInch; // 816 px
+      const height = letterHeightInches * pixelsPerInch; // 1056 px
+    
+      const dragBoundFunc = (pos, node) => {
+        let newX = pos.x;
+        let newY = pos.y;
+    
+        // Calcula los límites basados en las dimensiones del elemento
+        const box = node.getClientRect();
+        const offsetX = node.offsetX() ? node.offsetX() : 0;
+        const offsetY = node.offsetY() ? node.offsetY() : 0;
+    
+        if (box.x < 0) {
+          newX = offsetX; // Ajusta a la izquierda
+        } else if (box.x + box.width > width) {
+          newX = width - box.width + offsetX; // Ajusta a la derecha
+        }
+    
+        if (box.y < 0) {
+          newY = offsetY; // Ajusta arriba
+        } else if (box.y + box.height > height) {
+          newY = height - box.height + offsetY; // Ajusta abajo
+        }
+    
+        return {
+          x: newX,
+          y: newY,
+        };
+      };
 
   return (
     <>
@@ -428,13 +437,6 @@ const CanvasEditor = () => {
               <button onClick={addText}>Texto</button>
               <button onClick={addRect}>Rectángulo</button>
               <button onClick={addRect}>bloque</button>
-              <button onClick={zoomIn} disabled={scale >= maxScale}>
-                Zoom In
-              </button>
-              <button onClick={zoomOut} disabled={scale <= minScale}>
-                Zoom Out
-              </button>
-              <button onClick={resetZoom}>Reset Zoom</button>
             </div>
           </div>
           <p>Variables</p>
@@ -454,12 +456,25 @@ const CanvasEditor = () => {
           </div>
         </div>
 
+        <div className="content-help">
+          <button onClick={zoomIn} disabled={scale >= maxScale}>
+            +
+          </button>
+          <button onClick={resetZoom}>⟲</button>
+          <button onClick={zoomOut} disabled={scale <= minScale}>
+            -
+          </button>
+          <button onClick={toggleMargin}>
+            {showMargin ? "𖢔" : "⿴"}
+          </button>
+        </div>
+
         <div
           className="content-stage"
           style={{
             transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
             transformOrigin: "top center",
-            height: "100%"
+            height: "100%",
           }}
         >
           <div>
@@ -478,6 +493,17 @@ const CanvasEditor = () => {
               }}
             >
               <Layer>
+                {showMargin && (
+                  <Rect
+                    x={50} // Margen izquierda de 50 px
+                    y={50} // Margen superior de 50 px
+                    width={width - 100} // Ancho del lienzo menos 100 px (50 px a cada lado)
+                    height={height - 100} // Alto del lienzo menos 100 px (50 px arriba y abajo)
+                    stroke="gray"
+                    dash={[3, 3]} // Líneas discontinuas
+                    listening={false} // Evita que el rectángulo intercepte eventos de mouse
+                  />
+                )}
                 {items.map((item, idx) =>
                   React.createElement(item.type === "text" ? Text : Rect, {
                     key: idx,
@@ -504,7 +530,7 @@ const CanvasEditor = () => {
                     },
                     onTransformEnd: (e) => {
                       const node = e.target;
-                      
+
                       updateItem(item.id, {
                         ...item,
                         width: Math.max(5, node.width() * node.scaleX()),
