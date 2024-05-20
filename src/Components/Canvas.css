@@ -1,5 +1,4 @@
 body {
-  overflow: hidden;
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
@@ -39,11 +38,14 @@ body {
 }
 
 .barra-lateral-izq {
-  width: 15%;
+  width: 16%;
   padding: 10px;
   border-right: 1px solid gray;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  height: 100%;
+  background-color: #37404d;
 }
 
 .barra-lateral-izq p {
@@ -66,6 +68,7 @@ body {
   border: 1px solid gray;
   background-color: transparent;
   color: white;
+  padding-left: 6px;
 }
 
 .info-plantilla input::placeholder {
@@ -88,7 +91,7 @@ body {
 }
 
 .content-tools {
-  height: 16%;
+  height: 20%;
   align-items: start;
   overflow: auto;
   border-bottom: 1px solid gray;
@@ -117,7 +120,7 @@ body {
 
 .content-variables {
   padding: 10px;
-  height: 38%;
+  height: 42%;
   overflow: auto;
 }
 
@@ -156,19 +159,27 @@ body {
   overflow: auto;
   padding: 20px;
   margin: 15px;
+  margin-left: 17%;
 }
 
 .content-details {
-  width: 18%;
-  padding: 10px;
+  width: 16%;
+  padding: 0px 10px 0px 10px;
   border-left: 1px solid gray;
   overflow: auto;
-  height: 92vh;
+  height: 100vh;
+  position: fixed;
+  float: right;
+  right: 0;
+  background-color: #37404d;
 }
 
 .content-details p {
-  padding-bottom: 10px;
+  padding: 5px;
   color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content-details-item {

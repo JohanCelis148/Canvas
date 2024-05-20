@@ -191,63 +191,32 @@ const CanvasEditor = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [expandedPanelId, setExpandedPanelId] = useState(null);
 
-  const [scale, setScale] = useState(0.81);
-  console.log(scale)
+  const [scale, setScale] = useState(1);
+  console.log(scale);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const trRef = useRef();
 
-  const minScale = 0.5;  // Permite hacer zoom out hasta la mitad del tamaño original
-const maxScale = 1;    // El zoom original, no permite hacer zoom in más allá de esto
+  const minScale = 0.5; // Permite hacer zoom out hasta la mitad del tamaño original
+  const maxScale = 1; // El zoom original, no permite hacer zoom in más allá de esto
 
-const zoomIn = () => {
-  if (scale < maxScale) {
-    const newScale = Math.min(scale * 1.1, maxScale);
-    setScale(newScale);
-  }
-};
+  const zoomIn = () => {
+    if (scale < maxScale) {
+      const newScale = Math.min(scale * 1.1, maxScale);
+      setScale(newScale);
+    }
+  };
 
-const zoomOut = () => {
-  if (scale > minScale) {
-    const newScale = Math.max(scale * 0.9, minScale);
-    setScale(newScale);
-  }
-};
+  const zoomOut = () => {
+    if (scale > minScale) {
+      const newScale = Math.max(scale * 0.9, minScale);
+      setScale(newScale);
+    }
+  };
 
-const resetZoom = () => {
-  setScale(0.81);
-};
-
-  // const handleMouseDown = (e) => {
-  //   const startPos = { x: e.clientX, y: e.clientY };
-  //   const handleMouseMove = (moveEvt) => {
-  //     const newX = position.x + (moveEvt.clientX - startPos.x);
-  //     const newY = position.y + (moveEvt.clientY - startPos.y);
-  //     setPosition({ x: newX, y: newY });
-  //     startPos.x = moveEvt.clientX;
-  //     startPos.y = moveEvt.clientY;
-  //   };
-  //   const handleMouseUp = () => {
-  //     document.removeEventListener("mousemove", handleMouseMove);
-  //     document.removeEventListener("mouseup", handleMouseUp);
-  //   };
-  //   document.addEventListener("mousemove", handleMouseMove);
-  //   document.addEventListener("mouseup", handleMouseUp);
-  // };
-
-  // <div
-  //   className="content-stage"
-  //   onMouseDown={handleMouseDown}
-  //   style={{
-  //     transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
-  //     transformOrigin: "top left",
-  //     width: "100%",
-  //     height: "100%",
-  //     overflow: "hidden",
-  //   }}
-  // >
-  //   {/* Contenido del Stage de Konva aquí */}
-  // </div>;
+  const resetZoom = () => {
+    setScale(1);
+  };
 
   useEffect(() => {
     // Verifica si el elemento seleccionado aún existe
@@ -484,13 +453,13 @@ const resetZoom = () => {
             )}
           </div>
         </div>
+
         <div
           className="content-stage"
           style={{
             transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
             transformOrigin: "top center",
-            // height: "100%",
-            overflow: scale === 1 ? 'auto' : 'hidden'
+            height: "100%"
           }}
         >
           <div>
@@ -535,15 +504,13 @@ const resetZoom = () => {
                     },
                     onTransformEnd: (e) => {
                       const node = e.target;
+                      
                       updateItem(item.id, {
                         ...item,
-                        x: node.x(),
-                        y: node.y(),
-                        width: Math.max(5, node.width() * node.scaleX()), // Asegúrate de que las dimensiones no sean demasiado pequeñas
+                        width: Math.max(5, node.width() * node.scaleX()),
                         height: Math.max(5, node.height() * node.scaleY()),
                         rotation: node.rotation(),
                       });
-                      // Restablece los valores de escala para evitar aplicar el escalado múltiples veces
                       node.scaleX(1);
                       node.scaleY(1);
                     },
