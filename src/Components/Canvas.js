@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Stage, Layer, Text, Rect, Transformer } from "react-konva";
+import { Stage, Layer, Text, Rect, Transformer, Line } from "react-konva";
 import Swal from "sweetalert2";
 import logo from "../Assets/logo-coral.png";
 import axiosClient from "../app-axios";
@@ -12,9 +12,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
 
   const confirmDeletion = () => {
     Swal.fire({
-      // title: "¿Estás seguro de eliminar la seleccion?",
       text: "¿Estás seguro de eliminar la seleccion?",
-      // icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: "#37404d",
       cancelButtonColor: "#ff1d63",
@@ -467,6 +465,9 @@ const CanvasEditor = () => {
           <button onClick={toggleMargin}>
             {showMargin ? "𖢔" : "⿴"}
           </button>
+          <button onClick={toggleGrid}>
+            {showGrid ? "X" : "▦"}
+          </button>
         </div>
 
         <div
@@ -504,6 +505,26 @@ const CanvasEditor = () => {
                     listening={false} // Evita que el rectángulo intercepte eventos de mouse
                   />
                 )}
+                {showGrid &&
+                  Array.from({ length: Math.ceil(width / 10) }).map((_, i) => (
+                    <Line
+                      key={`v-${i}`}
+                      points={[i * 16, 0, i * 16, height]}
+                      stroke="gray"
+                      strokeWidth={0.5}
+                      listening={false}
+                    />
+                  ))}
+                {showGrid &&
+                  Array.from({ length: Math.ceil(height / 10) }).map((_, i) => (
+                    <Line
+                      key={`h-${i}`}
+                      points={[0, i * 16, width, i * 16]}
+                      stroke="gray"
+                      strokeWidth={0.5}
+                      listening={false}
+                    />
+                  ))}
                 {items.map((item, idx) =>
                   React.createElement(item.type === "text" ? Text : Rect, {
                     key: idx,
