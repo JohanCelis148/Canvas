@@ -267,7 +267,6 @@ const CanvasEditor = () => {
         } else if (item.type === "block") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
                     <p style="font-size: 16px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
-                    <p style="font-size: 14px; color: ${item.descriptionColor}">${item.description}</p>
                   </div>`;
         }
         return "";
