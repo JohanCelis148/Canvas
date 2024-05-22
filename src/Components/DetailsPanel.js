@@ -192,6 +192,107 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
             </>
           )}
+          {item.type === "block" && (
+            <>
+              <div className="content-details-item-block">
+                <label>Título: </label>
+                <input
+                  type="text"
+                  value={item.title}
+                  onChange={(e) => handleInputChange("title", e.target.value)}
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Fuente: </label>
+                <select
+                  value={item.titleFont}
+                  onChange={(e) =>
+                    handleInputChange("titleFont", e.target.value)
+                  }
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Courier New">Courier New</option>
+                </select>
+              </div>
+              <div className="content-details-item-block">
+                <label></label>
+                <select
+                  value={item.titleStyle}
+                  onChange={(e) =>
+                    handleInputChange("titleStyle", e.target.value)
+                  }
+                >
+                  <option value="normal">Normal</option>
+                  <option value="italic">Italic</option>
+                  <option value="bold">Negrita</option>
+                </select>
+              </div>
+              <div className="content-details-item-block">
+                <label>Color Titulo: </label>
+                <input
+                  type="color"
+                  value={item.titleColor}
+                  onChange={(e) =>
+                    handleInputChange("titleColor", e.target.value)
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Descripción: </label>
+                <textarea
+                  value={item.description}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
+                />
+              </div>
+              
+              <div className="content-details-item-block">
+                <label>Color Descripción: </label>
+                <input
+                  type="color"
+                  value={item.descriptionColor}
+                  onChange={(e) =>
+                    handleInputChange("descriptionColor", e.target.value)
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Tamaño Borde: </label>
+                <input
+                  type="number"
+                  value={item.strokeWidth}
+                  onChange={(e) =>
+                    handleInputChange("strokeWidth", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Borde radius: </label>
+                <input
+                  type="number"
+                  value={item.borderRadius}
+                  min={0}
+                  onChange={(e) =>
+                    handleInputChange("borderRadius", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Color Borde: </label>
+                <input
+                  type="color"
+                  value={item.strokeColor}
+                  onChange={(e) =>
+                    handleInputChange("strokeColor", e.target.value)
+                  }
+                />
+              </div>
+            </>
+          )}
           <div className="content-details-item-text">
             <div className="content-details-item-textsub">
               <label>X: </label>

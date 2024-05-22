@@ -12,6 +12,9 @@ const Block = ({
   onDragEnd,
   onTransformEnd,
   titleColor,
+  titleFont,
+  titleAling,
+  titleStyle,
   borderRadius,
   strokeWidth,
   strokeColor
@@ -38,11 +41,12 @@ const Block = ({
       <Text
         text={title}
         fontSize={16}
-        fontFamily="Arial"
+        fontFamily={titleFont}
         fill={titleColor}
         padding={10}
         width={width}
-        align="center"
+        align={titleAling}
+        fontStyle={titleStyle}
       />
     </Group>
   );
