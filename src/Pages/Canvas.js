@@ -3,9 +3,9 @@ import { Stage, Layer, Text, Rect, Transformer, Line } from "react-konva";
 import Swal from "sweetalert2";
 import logo from "../Assets/logo-coral.png";
 import axiosClient from "../app-axios";
-import Block from "../Components/Block";
-import DetailsPanel from "../Components/DetailsPanel";
-import "./Canvas.css";
+import Section from "../Components/section";
+import DetailsPanel from "../Components/detailsPanel";
+import "./canvas.css";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
@@ -76,12 +76,12 @@ const CanvasEditor = () => {
       y: 200,
       width: 300,
       height: 300,
-      borderRadius: 3,
+      borderRadius: 0,
       strokeWidth: 1,
       strokeColor: "#000000",
       title: "Título de la sección",
       titleColor: "#000000",
-      descriptionColor: "#636363",
+      descriptionColor: "#4E4E4E",
       description: "Descripción",
       fillColor: "",
       id: `⧈ Elemento ${items.length + 1} : Sección `,
@@ -90,6 +90,29 @@ const CanvasEditor = () => {
       dragBoundFunc: (pos) => dragBoundFunc(pos, newBlock.shapeRef.current),
     };
     setItems((prev) => [...prev, newBlock]);
+  };
+
+  const addSection = () => {
+    const newSection = {
+      type: "section",
+      x: 200,
+      y: 200,
+      width: 300,
+      height: 300,
+      borderRadius: 0,
+      strokeWidth: 1,
+      strokeColor: "#000000",
+      title: "Título de la sección",
+      titleColor: "#000000",
+      descriptionColor: "#4E4E4E",
+      description: "Descripción",
+      fillColor: "",
+      id: `⧈ Elemento ${items.length + 1} : Sección `,
+      draggable: true,
+      shapeRef: React.createRef(),
+      dragBoundFunc: (pos) => dragBoundFunc(pos, newSection.shapeRef.current),
+    };
+    setItems((prev) => [...prev, newSection]);
   };
 
   const addVariable = (name) => {
@@ -230,7 +253,7 @@ const CanvasEditor = () => {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily};">${item.text}</div>`;
         } else if (item.type === "rect") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
-        } else if (item.type === "block") {
+        } else if (item.type === "section") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
                     <p style="font-size: 16px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
                     <p style="font-size: 14px; color: ${item.descriptionColor}">${item.description}</p>
@@ -283,7 +306,7 @@ const CanvasEditor = () => {
           <p>Información plantilla</p>
           <div className="info-plantilla">
             <select>
-              <option> -- Seleccione la categoria </option>
+              <option> Seleccione la categoria </option>
               <option> Biopsia </option>
               <option> Inmunohistoquimica </option>
               <option> Especimen </option>
@@ -296,6 +319,7 @@ const CanvasEditor = () => {
               <button onClick={addText}>Texto</button>
               <button onClick={addRect}>Rectángulo</button>
               <button onClick={addBlock}>Bloque</button>
+              <button onClick={addSection}>Sección</button>
             </div>
           </div>
           <p>Variables</p>
@@ -456,9 +480,9 @@ const CanvasEditor = () => {
                         }}
                       />
                     );
-                  } else if (item.type === "block") {
+                  } else if (item.type === "section") {
                     return (
-                      <Block
+                      <Section
                         key={idx}
                         {...item}
                         ref={item.shapeRef}

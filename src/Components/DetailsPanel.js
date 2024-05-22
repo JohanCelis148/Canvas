@@ -78,7 +78,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
             </>
           )}
-          {item.type === "block" && (
+          {item.type === "section" && (
             <>
               <div className="content-details-item-block">
                 <label>Título: </label>
