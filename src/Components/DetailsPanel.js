@@ -80,7 +80,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
           )}
           {item.type === "block" && (
             <>
-              <div className="content-details-item-text1">
+              <div className="content-details-item-block">
                 <label>Título: </label>
                 <input
                   type="text"
@@ -88,7 +88,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   onChange={(e) => handleInputChange("title", e.target.value)}
                 />
               </div>
-              <div className="content-details-item-text1">
+              <div className="content-details-item-block">
                 <label>Descripción: </label>
                 <textarea
                   value={item.description}
@@ -97,13 +97,54 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 />
               </div>
-              <div className="content-details-item-textsub">
+              <div className="content-details-item-block">
                 <label>Color Titulo: </label>
                 <input
                   type="color"
                   value={item.titleColor}
                   onChange={(e) =>
                     handleInputChange("titleColor", e.target.value)
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Color Descripción: </label>
+                <input
+                  type="color"
+                  value={item.descriptionColor}
+                  onChange={(e) =>
+                    handleInputChange("descriptionColor", e.target.value)
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Tamaño Borde: </label>
+                <input
+                  type="number"
+                  value={item.strokeWidth}
+                  onChange={(e) =>
+                    handleInputChange("strokeWidth", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Borde radius: </label>
+                <input
+                  type="number"
+                  value={item.borderRadius}
+                  min={0}
+                  onChange={(e) =>
+                    handleInputChange("borderRadius", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Color Borde: </label>
+                <input
+                  type="color"
+                  value={item.strokeColor}
+                  onChange={(e) =>
+                    handleInputChange("strokeColor", e.target.value)
                   }
                 />
               </div>

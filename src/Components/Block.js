@@ -1,7 +1,22 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Group, Rect, Text } from 'react-konva';
 
-const Block = ({ x, y, width, title, description, fillColor, onClick, onDragEnd, onTransformEnd, isSelected, titleColor, borderRadius, strokeWidth, strokeColor }) => {
+const Block = ({
+  x,
+  y,
+  width,
+  title,
+  description,
+  fillColor,
+  onClick,
+  onDragEnd,
+  onTransformEnd,
+  descriptionColor,
+  titleColor,
+  borderRadius,
+  strokeWidth,
+  strokeColor
+}) => {
   const titleRef = useRef();
   const descriptionRef = useRef();
   const [blockHeight, setBlockHeight] = useState(100);
@@ -10,10 +25,10 @@ const Block = ({ x, y, width, title, description, fillColor, onClick, onDragEnd,
     const updateHeight = () => {
       const titleHeight = titleRef.current ? titleRef.current.height() : 0;
       const descriptionHeight = descriptionRef.current ? descriptionRef.current.height() : 0;
-      setBlockHeight(titleHeight + descriptionHeight + 20); // Add some padding
+      setBlockHeight(titleHeight + descriptionHeight + 10); // Add some padding
     };
     updateHeight();
-  }, [title, description]);
+  }, [title, description, width]);
 
   return (
     <Group
@@ -29,9 +44,9 @@ const Block = ({ x, y, width, title, description, fillColor, onClick, onDragEnd,
         width={width}
         height={blockHeight}
         fill={fillColor}
-        stroke={isSelected ? 'blue' : `${strokeColor}`}
-        strokeWidth={isSelected ? 2 : `${strokeWidth}`}
-        cornerRadius= {borderRadius}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+        cornerRadius={borderRadius}
       />
       <Text
         ref={titleRef}
@@ -41,16 +56,18 @@ const Block = ({ x, y, width, title, description, fillColor, onClick, onDragEnd,
         fill={titleColor}
         padding={10}
         width={width}
+        align="center"
       />
       <Text
         ref={descriptionRef}
         text={description}
         fontSize={14}
         fontFamily="Arial"
-        fill="black"
+        fill={descriptionColor}
         padding={10}
-        y={titleRef.current ? titleRef.current.height() + 20 : 20} // Adjust position based on title height
         width={width}
+        align="justify"
+        y={titleRef.current ? titleRef.current.height() + 5 : 10} // Adjust position based on title height
       />
     </Group>
   );

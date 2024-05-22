@@ -237,6 +237,40 @@ body {
   border: none;
 }
 
+.content-details-item-block{
+  margin-top: 5px;
+  display: flex;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-details-item-block input[type="text"]{
+  width:70%;
+  height: 25px;
+  border-radius: 4px;
+  border: none;
+}
+.content-details-item-block input[type="number"]{
+  width:20%;
+  height: 25px;
+  border-radius: 4px;
+  border: none;
+}
+.content-details-item-block input[type="color"]{
+  width:21%;
+  height: 30px;
+  border-radius: 4px;
+  border: none;
+}
+
+.content-details-item-block select{
+  width: 79%;
+  height: 25px;
+  border-radius: 4px;
+  border: none;
+}
+
 .content-details-item-text{
   margin-top: 5px;
   display: grid;

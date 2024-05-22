@@ -79,11 +79,12 @@ const CanvasEditor = () => {
       borderRadius: 3,
       strokeWidth: 1,
       strokeColor: "#000000",
-      title: "Título",
-      titleColor: "#E42424",
+      title: "Título de la sección",
+      titleColor: "#000000",
+      descriptionColor: "#636363",
       description: "Descripción",
-      fillColor: "#FFFFFF",
-      id: `⧈ Elemento ${items.length + 1} : Bloque `,
+      fillColor: "",
+      id: `⧈ Elemento ${items.length + 1} : Sección `,
       draggable: true,
       shapeRef: React.createRef(),
       dragBoundFunc: (pos) => dragBoundFunc(pos, newBlock.shapeRef.current),
@@ -231,8 +232,8 @@ const CanvasEditor = () => {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
         } else if (item.type === "block") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
-                    <div style="font-size: 16px; font-weight: bold;">${item.title}</div>
-                    <div style="font-size: 14px;">${item.description}</div>
+                    <p style="font-size: 16px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
+                    <p style="font-size: 14px; color: ${item.descriptionColor}">${item.description}</p>
                   </div>`;
         }
         return "";
@@ -245,7 +246,7 @@ const CanvasEditor = () => {
     <title>Plantilla</title>
     <style>
     body, html { margin: 0; height: 1056px; ; width: 816px; overflow: hidden; background-color: gray; }
-    #canvas { width: 100%; height: 100%; background-color: white; position: relative; }
+    #canvas { width: 816px; height: 1056px; background-color: white; position: relative; }
   </style>
     </head>
     <body>
@@ -461,7 +462,7 @@ const CanvasEditor = () => {
                         key={idx}
                         {...item}
                         ref={item.shapeRef}
-                        isSelected={selectedId === item.id}
+                        // isSelected={selectedId === item.id}
                         onClick={() => {
                           setSelectedId(item.id);
                           setExpandedPanelId(item.id);
