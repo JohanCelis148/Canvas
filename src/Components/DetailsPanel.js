@@ -53,6 +53,19 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   <option value="Courier New">Courier New</option>
                 </select>
               </div>
+              <div className="content-details-item-text1">
+                <label></label>
+                <select
+                  value={item.fontStyle}
+                  onChange={(e) =>
+                    handleInputChange("fontStyle", e.target.value)
+                  }
+                >
+                  <option value="normal">Normal</option>
+                  <option value="italic">Italic</option>
+                  <option value="bold">Negrita</option>
+                </select>
+              </div>
               <div className="content-details-item-text">
                 <div className="content-details-item-textsub">
                   <label>Tamaño: </label>
@@ -89,13 +102,32 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                 />
               </div>
               <div className="content-details-item-block">
-                <label>Descripción: </label>
-                <textarea
-                  value={item.description}
+                <label>Fuente: </label>
+                <select
+                  value={item.titleFont}
                   onChange={(e) =>
-                    handleInputChange("description", e.target.value)
+                    handleInputChange("titleFont", e.target.value)
                   }
-                />
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Courier New">Courier New</option>
+                </select>
+              </div>
+              <div className="content-details-item-block">
+                <label></label>
+                <select
+                  value={item.titleStyle}
+                  onChange={(e) =>
+                    handleInputChange("titleStyle", e.target.value)
+                  }
+                >
+                  <option value="normal">Normal</option>
+                  <option value="italic">Italic</option>
+                  <option value="bold">Negrita</option>
+                </select>
               </div>
               <div className="content-details-item-block">
                 <label>Color Titulo: </label>
@@ -107,6 +139,16 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 />
               </div>
+              <div className="content-details-item-block">
+                <label>Descripción: </label>
+                <textarea
+                  value={item.description}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
+                />
+              </div>
+              
               <div className="content-details-item-block">
                 <label>Color Descripción: </label>
                 <input

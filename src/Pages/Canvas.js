@@ -3,6 +3,7 @@ import { Stage, Layer, Text, Rect, Transformer, Line } from "react-konva";
 import Swal from "sweetalert2";
 import logo from "../Assets/logo-coral.png";
 import axiosClient from "../app-axios";
+import Block from "../Components/block";
 import Section from "../Components/section";
 import DetailsPanel from "../Components/detailsPanel";
 import "./canvas.css";
@@ -42,6 +43,7 @@ const CanvasEditor = () => {
       fontSize: 14,
       textColor: "black",
       fontFamily: "Arial",
+      fontStyle: "normal",
       id: `✎ Elemento ${items.length + 1} : Texto`,
       draggable: true,
       width: "auto",
@@ -75,16 +77,14 @@ const CanvasEditor = () => {
       x: 200,
       y: 200,
       width: 300,
-      height: 300,
-      borderRadius: 0,
+      height: 100,
+      borderRadius: 3,
       strokeWidth: 1,
       strokeColor: "#000000",
-      title: "Título de la sección",
+      title: "Título del bloque",
       titleColor: "#000000",
-      descriptionColor: "#4E4E4E",
-      description: "Descripción",
       fillColor: "",
-      id: `⧈ Elemento ${items.length + 1} : Sección `,
+      id: `⧈ Elemento ${items.length + 1} : Bloque `,
       draggable: true,
       shapeRef: React.createRef(),
       dragBoundFunc: (pos) => dragBoundFunc(pos, newBlock.shapeRef.current),
@@ -98,12 +98,15 @@ const CanvasEditor = () => {
       x: 200,
       y: 200,
       width: 300,
-      height: 300,
-      borderRadius: 0,
+      height: "auto",
+      borderRadius: 3,
       strokeWidth: 1,
       strokeColor: "#000000",
       title: "Título de la sección",
       titleColor: "#000000",
+      titleFont: "Arial",
+      titleAling: "center",
+      titleStyle: "bold",
       descriptionColor: "#4E4E4E",
       description: "Descripción",
       fillColor: "",
@@ -254,6 +257,11 @@ const CanvasEditor = () => {
         } else if (item.type === "rect") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
         } else if (item.type === "section") {
+          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
+                    <p style="font-size: 16px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
+                    <p style="font-size: 14px; color: ${item.descriptionColor}">${item.description}</p>
+                  </div>`;
+        } else if (item.type === "block") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
                     <p style="font-size: 16px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
                     <p style="font-size: 14px; color: ${item.descriptionColor}">${item.description}</p>
@@ -487,6 +495,42 @@ const CanvasEditor = () => {
                         {...item}
                         ref={item.shapeRef}
                         // isSelected={selectedId === item.id}
+                        onClick={() => {
+                          setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                        }}
+                        onTap={() => {
+                          setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                        }}
+                        onDragEnd={(e) => {
+                          setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                          updateItem(item.id, {
+                            ...item,
+                            x: e.target.x(),
+                            y: e.target.y(),
+                          });
+                        }}
+                        onTransformEnd={(e) => {
+                          const node = e.target;
+                          updateItem(item.id, {
+                            ...item,
+                            width: Math.max(5, node.width() * node.scaleX()),
+                            height: Math.max(5, node.height() * node.scaleY()),
+                            rotation: node.rotation(),
+                          });
+                          node.scaleX(1);
+                          node.scaleY(1);
+                        }}
+                      />
+                    );
+                  } else if (item.type === "block") {
+                    return (
+                      <Block
+                        key={idx}
+                        {...item}
+                        ref={item.shapeRef}
                         onClick={() => {
                           setSelectedId(item.id);
                           setExpandedPanelId(item.id);
