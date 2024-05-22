@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Group, Rect, Text } from 'react-konva';
 
-const Block = ({ x, y, width, title, description, fillColor, onClick, onDragEnd, onTransformEnd, isSelected, titleColor }) => {
+const Block = ({ x, y, width, title, description, fillColor, onClick, onDragEnd, onTransformEnd, isSelected, titleColor, borderRadius, strokeWidth, strokeColor }) => {
   const titleRef = useRef();
   const descriptionRef = useRef();
   const [blockHeight, setBlockHeight] = useState(100);
@@ -29,8 +29,9 @@ const Block = ({ x, y, width, title, description, fillColor, onClick, onDragEnd,
         width={width}
         height={blockHeight}
         fill={fillColor}
-        stroke={isSelected ? 'blue' : 'black'}
-        strokeWidth={isSelected ? 2 : 1}
+        stroke={isSelected ? 'blue' : `${strokeColor}`}
+        strokeWidth={isSelected ? 2 : `${strokeWidth}`}
+        cornerRadius= {borderRadius}
       />
       <Text
         ref={titleRef}

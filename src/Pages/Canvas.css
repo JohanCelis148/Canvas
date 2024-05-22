@@ -203,6 +203,7 @@ body {
 
 .content-details-item {
   padding: 10px;
+  font-size: 13px;
   border: 1px solid #ccc;
   margin-bottom: 10px;
   box-shadow: 0px 0px 4px 0px rgba(255, 255, 250, 0.5);

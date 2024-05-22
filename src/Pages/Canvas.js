@@ -3,299 +3,35 @@ import { Stage, Layer, Text, Rect, Transformer, Line } from "react-konva";
 import Swal from "sweetalert2";
 import logo from "../Assets/logo-coral.png";
 import axiosClient from "../app-axios";
-import Block from "./../Components/Block";
+import Block from "../Components/Block";
+import DetailsPanel from "../Components/DetailsPanel";
 import "./Canvas.css";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
-  const handleInputChange = (prop, value) => {
-    updateItem(item.id, { ...item, [prop]: value });
-  };
-
-  const confirmDeletion = () => {
-    Swal.fire({
-      text: "¿Estás seguro de eliminar la seleccion?",
-      showCancelButton: true,
-      confirmButtonColor: "#37404d",
-      cancelButtonColor: "#ff1d63",
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteItem(item.id);
-      }
-    });
-  };
-
-  return (
-    <>
-      <details className="content-details-item" open={isExpanded}>
-        <summary>
-          {item.id} <button onClick={confirmDeletion}>X</button>
-        </summary>
-        <div className="content-details-configuration">
-          {item.type === "text" && (
-            <>
-              <div className="content-details-item-text1">
-                <label>Texto: </label>
-                <input
-                  type="text"
-                  value={item.text}
-                  onChange={(e) => handleInputChange("text", e.target.value)}
-                />
-              </div>
-              <div className="content-details-item-text1">
-                <label>Fuente: </label>
-                <select
-                  value={item.fontFamily}
-                  onChange={(e) =>
-                    handleInputChange("fontFamily", e.target.value)
-                  }
-                >
-                  <option value="Arial">Arial</option>
-                  <option value="Verdana">Verdana</option>
-                  <option value="Helvetica">Helvetica</option>
-                  <option value="Times New Roman">Times New Roman</option>
-                  <option value="Courier New">Courier New</option>
-                </select>
-              </div>
-              <div className="content-details-item-text">
-                <div className="content-details-item-textsub">
-                  <label>Tamaño: </label>
-                  <input
-                    type="number"
-                    value={item.fontSize}
-                    onChange={(e) =>
-                      handleInputChange("fontSize", parseInt(e.target.value))
-                    }
-                  />
-                </div>
-
-                <div className="content-details-item-textsub">
-                  <label>Color: </label>
-                  <input
-                    type="color"
-                    value={item.textColor}
-                    onChange={(e) =>
-                      handleInputChange("textColor", e.target.value)
-                    }
-                  />
-                </div>
-              </div>
-            </>
-          )}
-          {item.type === "block" && (
-            <>
-              <div className="content-details-item-text1">
-                <label>Título: </label>
-                <input
-                  type="text"
-                  value={item.title}
-                  onChange={(e) => handleInputChange("title", e.target.value)}
-                />
-              </div>
-              <div className="content-details-item-text1">
-                <label>Descripción: </label>
-                <textarea
-                  value={item.description}
-                  onChange={(e) =>
-                    handleInputChange("description", e.target.value)
-                  }
-                />
-              </div>
-            </>
-          )}
-          <div className="content-details-item-text">
-            <div className="content-details-item-textsub">
-              <label>X: </label>
-              <input
-                type="number"
-                value={item.x}
-                onChange={(e) =>
-                  handleInputChange("x", parseInt(e.target.value))
-                }
-              />
-            </div>
-            <div className="content-details-item-textsub">
-              <label>Y: </label>
-              <input
-                type="number"
-                value={item.y}
-                onChange={(e) =>
-                  handleInputChange("y", parseInt(e.target.value))
-                }
-              />
-            </div>
-          </div>
-
-          <div className="content-details-item-text">
-            <div className="content-details-item-textsub">
-              <label>Ancho: </label>
-              <input
-                type="number"
-                value={item.width}
-                onChange={(e) =>
-                  handleInputChange("width", parseInt(e.target.value))
-                }
-              />
-            </div>
-            <div className="content-details-item-textsub">
-              <label>Alto: </label>
-              <input
-                type="number"
-                value={item.height}
-                onChange={(e) =>
-                  handleInputChange("height", parseInt(e.target.value))
-                }
-              />
-            </div>
-          </div>
-
-          {item.type === "rect" && (
-            <div className="content-details-item-text1">
-              <label>Relleno: </label>
-              <input
-                type="color"
-                value={item.fillColor}
-                onChange={(e) => handleInputChange("fillColor", e.target.value)}
-              />
-            </div>
-          )}
-        </div>
-      </details>
-    </>
-  );
-};
-
-// const generateHTML = (items) => {
-//   const htmlElements = items
-//     .map((item) => {
-//       if (item.type === "text") {
-//         return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor};">${item.text}</true>`;
-//       } else if (item.type === "rect") {
-//         return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
-//       }else if (item.type === "block") {
-//         return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
-//       }
-//       return "";
-//     })
-//     .join("");
-
-//   return `<!DOCTYPE html>
-//   <html>
-//   <head>
-//   <title>Plantilla</title>
-//   <style>
-//   body, html { margin: 0; height: 1056px; ; width: 816px; overflow: hidden; background-color: gray;}
-//   #canvas { width: 816px; height: 1056px; background-color: white; position: relative; }
-// </style>
-//   </head>
-//   <body>
-//   <div id="canvas">
-//   ${htmlElements}
-//   </div>
-//   </body>
-//   </html>`;
-// };
-
-// const downloadHtmlFile = (html) => {
-//   const blob = new Blob([html], { type: "text/html" });
-//   const url = URL.createObjectURL(blob);
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = "plantilla.html";
-//   document.body.appendChild(a);
-//   a.click();
-//   document.body.removeChild(a);
-// };
-
-const generateHTML = (items) => {
-  const htmlElements = items
-    .map((item) => {
-      if (item.type === "text") {
-        return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily};">${item.text}</div>`;
-      } else if (item.type === "rect") {
-        return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
-      } else if (item.type === "block") {
-        return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; background-color: #C5C5C5; border: 1px solid black; padding: 10px; box-sizing: border-box;">
-                  <div style="font-size: 16px; font-weight: bold;">${item.title}</div>
-                  <div style="font-size: 14px;">${item.description}</div>
-                </div>`;
-      }
-      return "";
-    })
-    .join("");
-
-  return `<!DOCTYPE html>
-  <html>
-  <head>
-  <title>Plantilla</title>
-  <style>
-  body, html { margin: 0; height: 1056px; ; width: 816px; overflow: hidden; background-color: gray;}
-  #canvas { width: 816px; height: 1056px; background-color: white; position: relative; }
-</style>
-  </head>
-  <body>
-  <div id="canvas">
-  ${htmlElements}
-  </div>
-  </body>
-  </html>`;
-};
-
-const downloadHtmlFile = (html) => {
-  const blob = new Blob([html], { type: "text/html" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "plantilla.html";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-};
-
+// CanvasEditor Component
 const CanvasEditor = () => {
   const [items, setItems] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [expandedPanelId, setExpandedPanelId] = useState(null);
   const [showMargin, setShowMargin] = useState(false);
   const [showGrid, setShowGrid] = useState(false);
-
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [data, setData] = useState([]);
+
+  console.log(items);
 
   const trRef = useRef();
   const layerRef = useRef();
-
   const minScale = 0.5;
   const maxScale = 1;
 
-  const toggleMargin = () => {
-    setShowMargin((prev) => !prev);
-  };
-
-  const toggleGrid = () => {
-    setShowGrid((prev) => !prev);
-  };
-
-  const zoomIn = () => {
-    if (scale < maxScale) {
-      const newScale = Math.min(scale * 1.1, maxScale);
-      setScale(newScale);
-    }
-  };
-
-  const zoomOut = () => {
-    if (scale > minScale) {
-      const newScale = Math.max(scale * 0.9, minScale);
-      setScale(newScale);
-    }
-  };
-
-  const resetZoom = () => {
-    setScale(1);
-  };
+  const toggleMargin = () => setShowMargin((prev) => !prev);
+  const toggleGrid = () => setShowGrid((prev) => !prev);
+  const zoomIn = () => setScale((prev) => Math.min(prev * 1.1, maxScale));
+  const zoomOut = () => setScale((prev) => Math.max(prev * 0.9, minScale));
+  const resetZoom = () => setScale(1);
 
   const addText = () => {
     const newText = {
@@ -303,10 +39,10 @@ const CanvasEditor = () => {
       x: 100,
       y: 100,
       text: "Nuevo Texto",
-      fontSize: 20,
+      fontSize: 14,
       textColor: "black",
       fontFamily: "Arial",
-      id: `✎ Texto ${items.length}`,
+      id: `✎ Elemento ${items.length + 1} : Texto`,
       draggable: true,
       width: "auto",
       height: "auto",
@@ -314,7 +50,7 @@ const CanvasEditor = () => {
       shapeRef: React.createRef(),
       dragBoundFunc: (pos) => dragBoundFunc(pos, newText.shapeRef.current),
     };
-    setItems([...items, newText]);
+    setItems((prev) => [...prev, newText]);
   };
 
   const addRect = () => {
@@ -325,12 +61,12 @@ const CanvasEditor = () => {
       width: 100,
       height: 50,
       fillColor: "#C5C5C5",
-      id: `☐ Rectangulo ${items.length}`,
+      id: `☐ Elemento ${items.length + 1} : Rectangulo`,
       draggable: true,
       shapeRef: React.createRef(),
       dragBoundFunc: (pos) => dragBoundFunc(pos, newRect.shapeRef.current),
     };
-    setItems([...items, newRect]);
+    setItems((prev) => [...prev, newRect]);
   };
 
   const addBlock = () => {
@@ -340,40 +76,19 @@ const CanvasEditor = () => {
       y: 200,
       width: 300,
       height: 300,
+      borderRadius: 3,
+      strokeWidth: 1,
+      strokeColor: "#000000",
       title: "Título",
-      titleColor: "#E42424", // Añade el color de fondo predeterminado
+      titleColor: "#E42424",
       description: "Descripción",
-      fillColor: "#9E9E9E", // Añade el color de fondo predeterminado
-      id: `⧈ Bloque ${items.length}`,
+      fillColor: "#FFFFFF",
+      id: `⧈ Elemento ${items.length + 1} : Bloque `,
       draggable: true,
       shapeRef: React.createRef(),
       dragBoundFunc: (pos) => dragBoundFunc(pos, newBlock.shapeRef.current),
     };
-    setItems([...items, newBlock]);
-  };
-
-  const addPatientDetailsBlock = () => {
-    const newPatientDetailsBlock = {
-      type: "patientDetails",
-      x: 100,
-      y: 100,
-      width: 300,
-      height: 150,
-      patientInfo: {
-        name: "Paciente de Prueba",
-        id: "1075123456",
-        birthDate: "11/11/1991",
-        age: "32 Años 6 Meses 10 Días",
-        gender: "Masculino",
-      },
-      fillColor: "#C5C5C5",
-      id: `⊙ Detalles del Paciente ${items.length}`,
-      draggable: true,
-      shapeRef: React.createRef(),
-      dragBoundFunc: (pos) =>
-        dragBoundFunc(pos, newPatientDetailsBlock.shapeRef.current),
-    };
-    setItems([...items, newPatientDetailsBlock]);
+    setItems((prev) => [...prev, newBlock]);
   };
 
   const addVariable = (name) => {
@@ -382,37 +97,31 @@ const CanvasEditor = () => {
       x: 150,
       y: 150,
       text: name,
-      fontSize: 20,
+      fontSize: 14,
       textColor: "#8e50f6",
-      id: `♦︎ ${name} ${items.length}`,
+      id: `♦︎ Elemento ${items.length + 1} : ${name}`,
       draggable: true,
       width: "auto",
       shapeRef: React.createRef(),
       dragBoundFunc: (pos) => dragBoundFunc(pos, newVariable.shapeRef.current),
     };
-    setItems([...items, newVariable]);
+    setItems((prev) => [...prev, newVariable]);
   };
 
   const updateItem = (id, updatedProps) => {
-    const updatedItems = items.map((item) =>
-      item.id === id ? updatedProps : item
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? updatedProps : item))
     );
-    setItems(updatedItems);
   };
 
   const deleteItem = (id) => {
-    const updatedItems = items.filter((item) => item.id !== id);
-    setItems(updatedItems);
-    if (selectedId === id) {
-      setSelectedId(null);
-    }
+    setItems((prev) => prev.filter((item) => item.id !== id));
+    if (selectedId === id) setSelectedId(null);
   };
 
   const updateTextSize = (item) => {
     const textShape = item.shapeRef.current;
-    if (textShape) {
-      textShape.height(textShape.textHeight());
-    }
+    if (textShape) textShape.height(textShape.textHeight());
   };
 
   const handleTextChange = (id, newText) => {
@@ -424,25 +133,19 @@ const CanvasEditor = () => {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === "Delete") {
-      if (selectedId !== null) {
-        Swal.fire({
-          text: "¿Estás seguro de eliminar la seleccion?",
-          showCancelButton: true,
-          confirmButtonColor: "#37404d",
-          cancelButtonColor: "#ff1d63",
-          confirmButtonText: "Eliminar",
-          cancelButtonText: "Cancelar",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            deleteItem(selectedId);
-          }
-        });
-      }
+    if (event.key === "Delete" && selectedId !== null) {
+      Swal.fire({
+        text: "¿Estás seguro de eliminar la seleccion?",
+        showCancelButton: true,
+        confirmButtonColor: "#37404d",
+        cancelButtonColor: "#ff1d63",
+        confirmButtonText: "Eliminar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) deleteItem(selectedId);
+      });
     }
   };
-
-  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -453,15 +156,12 @@ const CanvasEditor = () => {
         console.error("Error al obtener los datos:", error);
       }
     };
-
     fetchData();
   }, []);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
+    return () => window.removeEventListener("keydown", handleKeyPress);
   }, [selectedId]);
 
   useEffect(() => {
@@ -470,44 +170,28 @@ const CanvasEditor = () => {
       trRef.current.nodes([selectedNode.shapeRef.current]);
       trRef.current.getLayer().batchDraw();
     } else {
-      if (trRef.current) {
-        trRef.current.nodes([]);
-        trRef.current.getLayer().batchDraw();
-      }
+      trRef.current?.nodes([]);
+      trRef.current?.getLayer().batchDraw();
     }
   }, [selectedId, items]);
 
   const pixelsPerInch = 96;
   const letterWidthInches = 8.5;
   const letterHeightInches = 11;
-
   const width = letterWidthInches * pixelsPerInch;
   const height = letterHeightInches * pixelsPerInch;
 
   const dragBoundFunc = (pos, node) => {
     let newX = pos.x;
     let newY = pos.y;
-
     const box = node.getClientRect();
     const offsetX = node.offsetX() ? node.offsetX() : 0;
     const offsetY = node.offsetY() ? node.offsetY() : 0;
-
-    if (box.x < 0) {
-      newX = offsetX;
-    } else if (box.x + box.width > width) {
-      newX = width - box.width + offsetX;
-    }
-
-    if (box.y < 0) {
-      newY = offsetY;
-    } else if (box.y + box.height > height) {
-      newY = height - box.height + offsetY;
-    }
-
-    return {
-      x: newX,
-      y: newY,
-    };
+    if (box.x < 0) newX = offsetX;
+    else if (box.x + box.width > width) newX = width - box.width + offsetX;
+    if (box.y < 0) newY = offsetY;
+    else if (box.y + box.height > height) newY = height - box.height + offsetY;
+    return { x: newX, y: newY };
   };
 
   const handleSaveTemplate = () => {
@@ -515,37 +199,40 @@ const CanvasEditor = () => {
     downloadHtmlFile(html);
   };
 
+  // const handleGeneratePDF = () => {
+  //   const element = document.getElementById("pdf-canvas");
+  //   html2canvas(element, { useCORS: true }).then((canvas) => {
+  //     const imgData = canvas.toDataURL("image/png");
+  //     const pdf = new jsPDF("p", "pt", "letter");
+  //     pdf.addImage(imgData, "PNG", 0, 0, 816, 1056);
+  //     pdf.save("plantilla.pdf");
+  //   });
+  // };
+
+  // Funcion para generar el pdf de acuerdo a la estructura HTML
   const handleGeneratePDF = () => {
-    const element = document.getElementById("pdf-canvas");
-    html2canvas(element, {
-      useCORS: true,
-    }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "pt", "letter");
-      pdf.addImage(imgData, "PNG", 0, 0, 612, 792);
-      pdf.save("plantilla.pdf");
+    const html = generateHTML(items);
+    const pdf = new jsPDF("p", "pt", "letter");
+    pdf.html(html, {
+      callback: (doc) => {
+        doc.save("plantilla.pdf");
+      },
     });
   };
 
+  // Funcion para generar estructura HTML
   const generateHTML = (items) => {
     const htmlElements = items
+
       .map((item) => {
         if (item.type === "text") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily};">${item.text}</div>`;
         } else if (item.type === "rect") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
         } else if (item.type === "block") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor}; border: 1px solid black; padding: 10px; box-sizing: border-box;">
+          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
                     <div style="font-size: 16px; font-weight: bold;">${item.title}</div>
                     <div style="font-size: 14px;">${item.description}</div>
-                  </div>`;
-        } else if (item.type === "patientDetails") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor}; border: 1px solid black; padding: 10px; box-sizing: border-box;">
-                    <div style="font-size: 14px;">Nombre: ${item.patientInfo.name}</div>
-                    <div style="font-size: 14px;">ID: ${item.patientInfo.id}</div>
-                    <div style="font-size: 14px;">Fecha de Nacimiento: ${item.patientInfo.birthDate}</div>
-                    <div style="font-size: 14px;">Edad: ${item.patientInfo.age}</div>
-                    <div style="font-size: 14px;">Género: ${item.patientInfo.gender}</div>
                   </div>`;
         }
         return "";
@@ -557,7 +244,7 @@ const CanvasEditor = () => {
     <head>
     <title>Plantilla</title>
     <style>
-    body, html { margin: 0; height: 100%; width: 100%; overflow: hidden; background-color: gray; }
+    body, html { margin: 0; height: 1056px; ; width: 816px; overflow: hidden; background-color: gray; }
     #canvas { width: 100%; height: 100%; background-color: white; position: relative; }
   </style>
     </head>
@@ -569,6 +256,7 @@ const CanvasEditor = () => {
     </html>`;
   };
 
+  // Funcion pra descargar estructura HTML
   const downloadHtmlFile = (html) => {
     const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
@@ -584,10 +272,11 @@ const CanvasEditor = () => {
     <>
       <div className="header">
         <img src={logo} width={75} style={{ margin: 12 }} />
-        <button onClick={handleSaveTemplate}>Guardar Plantilla</button>
-        <button onClick={handleGeneratePDF}>Generar PDF</button>
+        <div>
+          <button onClick={handleSaveTemplate}>Guardar Plantilla</button>
+          <button onClick={handleGeneratePDF}>Generar PDF</button>
+        </div>
       </div>
-
       <div className="layout">
         <div className="barra-lateral-izq">
           <p>Información plantilla</p>
@@ -624,7 +313,6 @@ const CanvasEditor = () => {
             )}
           </div>
         </div>
-
         <div className="content-help">
           <button onClick={zoomIn} disabled={scale >= maxScale}>
             +
@@ -633,14 +321,9 @@ const CanvasEditor = () => {
           <button onClick={zoomOut} disabled={scale <= minScale}>
             -
           </button>
-          <button onClick={toggleMargin}>
-            {showMargin ? "𖢔" : "⿴"}
-          </button>
-          <button onClick={toggleGrid}>
-            {showGrid ? "X" : "▦"}
-          </button>
+          <button onClick={toggleMargin}>{showMargin ? "𖢔" : "⿴"}</button>
+          <button onClick={toggleGrid}>{showGrid ? "X" : "▦"}</button>
         </div>
-
         <div
           className="content-stage"
           id="pdf-canvas" // Añadir el id al div contenedor
@@ -670,8 +353,8 @@ const CanvasEditor = () => {
                   <Rect
                     x={40}
                     y={40}
-                    width={width - 100}
-                    height={height - 100}
+                    width={width - 80}
+                    height={height - 80}
                     stroke="black"
                     dash={[3, 3]}
                     listening={false}
@@ -817,7 +500,6 @@ const CanvasEditor = () => {
             </Stage>
           </div>
         </div>
-
         <div className="content-details">
           <p>Elementos</p>
           {items.map((item) => (
