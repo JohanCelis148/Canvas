@@ -8,7 +8,7 @@ import Section from "../Components/section";
 import DetailsPanel from "../Components/detailsPanel";
 import "./canvas.css";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 
 // CanvasEditor Component
 const CanvasEditor = () => {
@@ -20,8 +20,6 @@ const CanvasEditor = () => {
   const [scale, setScale] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [data, setData] = useState([]);
-
-  console.log(items);
 
   const trRef = useRef();
   const layerRef = useRef();
@@ -62,7 +60,10 @@ const CanvasEditor = () => {
       y: 180,
       width: 100,
       height: 50,
-      fillColor: "#C5C5C5",
+      fillColor: "transparent",
+      stroke: "gray",
+      strokeWidth: 1,
+      cornerRadius: 3,
       id: `☐ Elemento ${items.length + 1} : Rectangulo`,
       draggable: true,
       shapeRef: React.createRef(),
@@ -79,14 +80,17 @@ const CanvasEditor = () => {
       width: 300,
       height: 100,
       borderRadius: 3,
-      strokeWidth: 1,
+      strokeWidth: 0.1,
       strokeColor: "#000000",
       title: "Título del bloque",
+      titleSize: 14,
       titleColor: "#000000",
       titleFont: "Arial",
       titleAling: "center",
       titleStyle: "bold",
       fillColor: "",
+      titleBackgroundColor: "lightgray", // fondo del título
+      titleHeight: 30,
       id: `⧈ Elemento ${items.length + 1} : Bloque `,
       draggable: true,
       shapeRef: React.createRef(),
@@ -121,15 +125,15 @@ const CanvasEditor = () => {
     setItems((prev) => [...prev, newSection]);
   };
 
-  const addVariable = (name) => {
+  const addVariable = (name, url) => {
     const newVariable = {
       type: "text",
       x: 150,
       y: 150,
-      text: name,
+      text: url,
       fontSize: 14,
       textColor: "#8e50f6",
-      id: `♦︎ Elemento ${items.length + 1} : ${name}`,
+      id: `♦︎ Variable ${items.length + 1} : ${name}`,
       draggable: true,
       width: "auto",
       shapeRef: React.createRef(),
@@ -167,7 +171,7 @@ const CanvasEditor = () => {
       Swal.fire({
         text: "¿Estás seguro de eliminar la seleccion?",
         showCancelButton: true,
-        confirmButtonColor: "#37404d",
+        confirmButtonColor: "#0c77bf",
         cancelButtonColor: "#ff1d63",
         confirmButtonText: "Eliminar",
         cancelButtonText: "Cancelar",
@@ -253,7 +257,6 @@ const CanvasEditor = () => {
   // Funcion para generar estructura HTML
   const generateHTML = (items) => {
     const htmlElements = items
-
       .map((item) => {
         if (item.type === "text") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily};">${item.text}</div>`;
@@ -306,7 +309,7 @@ const CanvasEditor = () => {
     <>
       <div className="header">
         <img src={logo} width={75} style={{ margin: 12 }} />
-        <div>
+        <div className="content-buttons">
           <button onClick={handleSaveTemplate}>Guardar Plantilla</button>
           <button onClick={handleGeneratePDF}>Generar PDF</button>
         </div>
@@ -339,7 +342,7 @@ const CanvasEditor = () => {
                 {data.map((item, index) => (
                   <div className="item-variables" key={index}>
                     {item.name}{" "}
-                    <button onClick={() => addVariable(item.name)}>+</button>
+                    <button onClick={() => addVariable(item.name, item.url)}>+</button>
                   </div>
                 ))}
               </li>

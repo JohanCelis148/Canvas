@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Group, Rect, Text } from 'react-konva';
+import React, { useRef, useEffect, useState } from "react";
+import { Group, Rect, Text, Shape } from "react-konva";
 
 const Block = ({
   x,
@@ -9,24 +9,27 @@ const Block = ({
   title,
   fillColor,
   onClick,
+  onTap,
   onDragEnd,
   onTransformEnd,
   titleColor,
+  titleSize,
   titleFont,
-  titleAling,
+  titleAlign,
   titleStyle,
   borderRadius,
   strokeWidth,
-  strokeColor
+  strokeColor,
+  titleBackgroundColor,
+  titleHeight
 }) => {
-
   return (
     <Group
       x={x}
       y={y}
       draggable
       onClick={onClick}
-      onTap={onClick}
+      onTap={onTap}
       onDragEnd={onDragEnd}
       onTransformEnd={onTransformEnd}
     >
@@ -38,15 +41,33 @@ const Block = ({
         strokeWidth={strokeWidth}
         cornerRadius={borderRadius}
       />
+      <Shape
+        sceneFunc={(context, shape) => {
+          context.beginPath();
+          context.moveTo(0, titleHeight);
+          context.lineTo(0, borderRadius);
+          context.arcTo(0, 0, borderRadius, 0, borderRadius);
+          context.lineTo(width - borderRadius, 0);
+          context.arcTo(width, 0, width, borderRadius, borderRadius);
+          context.lineTo(width, titleHeight);
+          context.closePath();
+          context.fillStrokeShape(shape);
+        }}
+        fill={titleBackgroundColor}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+      />
       <Text
         text={title}
-        fontSize={16}
+        fontSize={titleSize}
         fontFamily={titleFont}
         fill={titleColor}
-        padding={10}
-        width={width}
-        align={titleAling}
+        verticalAlign="middle"
+        align={titleAlign}
         fontStyle={titleStyle}
+        width={width}
+        height={titleHeight}
+        // y={titleHeight / 2 - 8} // Centra verticalmente el texto en el rectángulo del título
       />
     </Group>
   );

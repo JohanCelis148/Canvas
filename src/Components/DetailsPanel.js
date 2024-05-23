@@ -10,7 +10,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
     Swal.fire({
       text: "¿Estás seguro de eliminar la seleccion?",
       showCancelButton: true,
-      confirmButtonColor: "#37404d",
+      confirmButtonColor: "#0c77bf",
       cancelButtonColor: "#ff1d63",
       confirmButtonText: "Eliminar",
       cancelButtonText: "Cancelar",
@@ -28,6 +28,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
           {item.id} <button onClick={confirmDeletion}>X</button>
         </summary>
         <div className="content-details-configuration">
+          
           {item.type === "text" && (
             <>
               <div className="content-details-item-text1">
@@ -91,6 +92,8 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
             </>
           )}
+
+
           {item.type === "section" && (
             <>
               <div className="content-details-item-block">
@@ -141,18 +144,20 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
               <div className="content-details-item-block">
                 <label>Descripción: </label>
-                <textarea
+                <input
+                  type="text"
                   value={item.description}
                   onChange={(e) =>
                     handleInputChange("description", e.target.value)
                   }
                 />
               </div>
-              
+
               <div className="content-details-item-block">
                 <label>Color Descripción: </label>
                 <input
                   type="color"
+                  placeholder="Descripción"
                   value={item.descriptionColor}
                   onChange={(e) =>
                     handleInputChange("descriptionColor", e.target.value)
@@ -240,17 +245,18 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 />
               </div>
-              <div className="content-details-item-block">
+              {/* <div className="content-details-item-block">
                 <label>Descripción: </label>
-                <textarea
+                <input
+                  type="text"
                   value={item.description}
                   onChange={(e) =>
                     handleInputChange("description", e.target.value)
                   }
                 />
-              </div>
-              
-              <div className="content-details-item-block">
+              </div> */}
+
+              {/* <div className="content-details-item-block">
                 <label>Color Descripción: </label>
                 <input
                   type="color"
@@ -259,14 +265,17 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                     handleInputChange("descriptionColor", e.target.value)
                   }
                 />
-              </div>
+              </div> */}
               <div className="content-details-item-block">
                 <label>Tamaño Borde: </label>
                 <input
                   type="number"
+                  step="0.1"
+                  min={0.1}
+                  placeholder="0,0"
                   value={item.strokeWidth}
                   onChange={(e) =>
-                    handleInputChange("strokeWidth", parseInt(e.target.value))
+                    handleInputChange("strokeWidth",e.target.value)
                   }
                 />
               </div>
