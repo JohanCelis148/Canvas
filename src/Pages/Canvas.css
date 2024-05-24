@@ -1,6 +1,7 @@
 body {
   margin: 0%;
   padding: 0%;
+  overflow-x: hidden;
   box-sizing: border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -60,7 +61,7 @@ body {
 
 .barra-lateral-izq {
   width: 16%;
-  padding: 10px;
+  padding: 0px 10px 0px 10px ;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(138, 138, 138, 0.23) 0px 6px 5px;
   display: flex;
   flex-direction: column;
@@ -76,7 +77,6 @@ body {
   width: 100%;
   font-weight: 600;
   border-bottom: 0.5px solid rgba(151, 151, 151, 0.37);
-  /* border-top: 0.5px solid rgba(151, 151, 151, 0.37); */
   padding: 10px;
 }
 
@@ -152,7 +152,7 @@ body {
 
 .content-variables {
   padding: 10px;
-  height: 40%;
+  height: 41%;
   overflow: auto;
 }
 
@@ -197,14 +197,14 @@ body {
   position: fixed;
   float: bottom;
   bottom: 15px;
-  left: 78%;
+  left: 78.5%;
   z-index: 20;
   background-color: #37404d;
   padding: 15px 5px 15px 5px;
   border-radius: 50px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 4px 0px rgba(255, 255, 250, 0.5);
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
 }
 
 .content-help button{

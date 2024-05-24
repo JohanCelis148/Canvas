@@ -24,7 +24,7 @@ const CanvasEditor = () => {
   const trRef = useRef();
   const layerRef = useRef();
   const minScale = 0.5;
-  const maxScale = 1;
+  const maxScale = 1.3;
 
   const toggleMargin = () => setShowMargin((prev) => !prev);
   const toggleGrid = () => setShowGrid((prev) => !prev);
@@ -80,7 +80,7 @@ const CanvasEditor = () => {
       width: 300,
       height: 100,
       borderRadius: 3,
-      strokeWidth: 0.1,
+      strokeWidth: 0.5,
       strokeColor: "#000000",
       title: "Título del bloque",
       titleSize: 14,
@@ -89,7 +89,7 @@ const CanvasEditor = () => {
       titleAling: "center",
       titleStyle: "bold",
       fillColor: "",
-      titleBackgroundColor: "lightgray", // fondo del título
+      titleBackgroundColor: "gray", // fondo del título
       titleHeight: 30,
       id: `⧈ Elemento ${items.length + 1} : Bloque `,
       draggable: true,
@@ -107,7 +107,7 @@ const CanvasEditor = () => {
       width: 300,
       height: "auto",
       borderRadius: 3,
-      strokeWidth: 1,
+      strokeWidth: 0.5,
       strokeColor: "#000000",
       title: "Título de la sección",
       titleColor: "#000000",
@@ -125,12 +125,12 @@ const CanvasEditor = () => {
     setItems((prev) => [...prev, newSection]);
   };
 
-  const addVariable = (name, url) => {
+  const addVariable = (name) => {
     const newVariable = {
       type: "text",
       x: 150,
       y: 150,
-      text: url,
+      text: `{${name}}`,
       fontSize: 14,
       textColor: "#8e50f6",
       id: `♦︎ Variable ${items.length + 1} : ${name}`,
@@ -342,7 +342,7 @@ const CanvasEditor = () => {
                 {data.map((item, index) => (
                   <div className="item-variables" key={index}>
                     {item.name}{" "}
-                    <button onClick={() => addVariable(item.name, item.url)}>+</button>
+                    <button onClick={() => addVariable(item.name)}>+</button>
                   </div>
                 ))}
               </li>
@@ -403,7 +403,7 @@ const CanvasEditor = () => {
                     <Line
                       key={`v-${i}`}
                       points={[i * 16, 0, i * 16, height]}
-                      stroke="gray"
+                      stroke="lightgray"
                       strokeWidth={0.5}
                       listening={false}
                     />
@@ -449,7 +449,7 @@ const CanvasEditor = () => {
                             ...item,
                             width: Math.max(5, node.width() * node.scaleX()),
                             height: Math.max(5, node.height() * node.scaleY()),
-                            rotation: node.rotation(),
+                            // rotation: node.rotation(),
                           });
                           node.scaleX(1);
                           node.scaleY(1);
@@ -486,7 +486,7 @@ const CanvasEditor = () => {
                             ...item,
                             width: Math.max(5, node.width() * node.scaleX()),
                             height: Math.max(5, node.height() * node.scaleY()),
-                            rotation: node.rotation(),
+                            // rotation: node.rotation(),
                           });
                           node.scaleX(1);
                           node.scaleY(1);
@@ -523,7 +523,7 @@ const CanvasEditor = () => {
                             ...item,
                             width: Math.max(5, node.width() * node.scaleX()),
                             height: Math.max(5, node.height() * node.scaleY()),
-                            rotation: node.rotation(),
+                            // rotation: node.rotation(),
                           });
                           node.scaleX(1);
                           node.scaleY(1);
@@ -559,7 +559,7 @@ const CanvasEditor = () => {
                             ...item,
                             width: Math.max(5, node.width() * node.scaleX()),
                             height: Math.max(5, node.height() * node.scaleY()),
-                            rotation: node.rotation(),
+                            // rotation: node.rotation(),
                           });
                           node.scaleX(1);
                           node.scaleY(1);
