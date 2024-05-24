@@ -14,7 +14,7 @@ const Block = ({
   descriptionColor,
   titleColor,
   titleFont,
-  titleAling,
+  titleAlign,
   titleStyle,
   borderRadius,
   strokeWidth,
@@ -59,7 +59,7 @@ const Block = ({
         fill={titleColor}
         padding={10}
         width={width}
-        align={titleAling}
+        align={titleAlign}
         fontStyle={titleStyle}
       />
       <Text

@@ -10,7 +10,6 @@ import "./canvas.css";
 import jsPDF from "jspdf";
 // import html2canvas from "html2canvas";
 
-// CanvasEditor Component
 const CanvasEditor = () => {
   const [items, setItems] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
@@ -86,10 +85,10 @@ const CanvasEditor = () => {
       titleSize: 14,
       titleColor: "#000000",
       titleFont: "Arial",
-      titleAling: "center",
+      titleAlign: "center",
       titleStyle: "bold",
       fillColor: "",
-      titleBackgroundColor: "gray", // fondo del título
+      titleFill: "#C9C9C9", // fondo del título
       titleHeight: 30,
       id: `⧈ Elemento ${items.length + 1} : Bloque `,
       draggable: true,
@@ -112,7 +111,7 @@ const CanvasEditor = () => {
       title: "Título de la sección",
       titleColor: "#000000",
       titleFont: "Arial",
-      titleAling: "center",
+      titleAlign: "center",
       titleStyle: "bold",
       descriptionColor: "#4E4E4E",
       description: "Descripción",
@@ -244,6 +243,7 @@ const CanvasEditor = () => {
   // };
 
   // Funcion para generar el pdf de acuerdo a la estructura HTML
+
   const handleGeneratePDF = () => {
     const html = generateHTML(items);
     const pdf = new jsPDF("p", "pt", "letter");
@@ -389,10 +389,10 @@ const CanvasEditor = () => {
               <Layer ref={layerRef}>
                 {showMargin && (
                   <Rect
-                    x={40}
-                    y={40}
-                    width={width - 80}
-                    height={height - 80}
+                    x={33}
+                    y={33}
+                    width={width - 65}
+                    height={height - 65}
                     stroke="black"
                     dash={[3, 3]}
                     listening={false}

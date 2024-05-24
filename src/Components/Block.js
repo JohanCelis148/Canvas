@@ -20,8 +20,8 @@ const Block = ({
   borderRadius,
   strokeWidth,
   strokeColor,
-  titleBackgroundColor,
-  titleHeight
+  titleFill,
+  titleHeight,
 }) => {
   return (
     <Group
@@ -53,7 +53,7 @@ const Block = ({
           context.closePath();
           context.fillStrokeShape(shape);
         }}
-        fill={titleBackgroundColor}
+        fill={titleFill}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />

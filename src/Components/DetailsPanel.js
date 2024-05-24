@@ -28,7 +28,6 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
           {item.id} <button onClick={confirmDeletion}>X</button>
         </summary>
         <div className="content-details-configuration">
-          
           {item.type === "text" && (
             <>
               <div className="content-details-item-text1">
@@ -67,6 +66,19 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   <option value="bold">Negrita</option>
                 </select>
               </div>
+              <div className="content-details-item-text1">
+                <label></label>
+                <select
+                  value={item.titleAlign}
+                  onChange={(e) =>
+                    handleInputChange("titleAlign", e.target.value)
+                  }
+                >
+                  <option value="normal">Normal</option>
+                  <option value="italic">Italic</option>
+                  <option value="bold">Negrita</option>
+                </select>
+              </div>
               <div className="content-details-item-text">
                 <div className="content-details-item-textsub">
                   <label>Tamaño: </label>
@@ -92,7 +104,6 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
             </>
           )}
-
 
           {item.type === "section" && (
             <>
@@ -197,6 +208,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
             </>
           )}
+
           {item.type === "block" && (
             <>
               <div className="content-details-item-block">
@@ -207,6 +219,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   onChange={(e) => handleInputChange("title", e.target.value)}
                 />
               </div>
+
               <div className="content-details-item-block">
                 <label>Fuente: </label>
                 <select
@@ -222,6 +235,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   <option value="Courier New">Courier New</option>
                 </select>
               </div>
+
               <div className="content-details-item-block">
                 <label></label>
                 <select
@@ -235,6 +249,43 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   <option value="bold">Negrita</option>
                 </select>
               </div>
+
+              <div className="content-details-item-block">
+                <label>Alineación</label>
+                <select
+                  value={item.titleAlign}
+                  onChange={(e) =>
+                    handleInputChange("titleAlign", e.target.value)
+                  }
+                >
+                  <option value="left">Izquierda</option>
+                  <option value="center">Centrado</option>
+                  <option value="right">Derecha</option>
+                </select>
+              </div>
+
+              <div className="content-details-item-block">
+                <label>Fondo titulo: </label>
+                <input
+                  type="color"
+                  value={item.titleFill}
+                  onChange={(e) =>
+                    handleInputChange("titleFill", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="content-details-item-block">
+                <label>Fondo Bloque: </label>
+                <input
+                  type="color"
+                  value={item.fillColor}
+                  onChange={(e) =>
+                    handleInputChange("fillColor", e.target.value)
+                  }
+                />
+              </div>
+
               <div className="content-details-item-block">
                 <label>Color Titulo: </label>
                 <input
@@ -245,27 +296,16 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 />
               </div>
-              {/* <div className="content-details-item-block">
-                <label>Descripción: </label>
+              <div className="content-details-item-block">
+                <label>Tamaño: </label>
                 <input
-                  type="text"
-                  value={item.description}
+                  type="number"
+                  value={item.titleSize}
                   onChange={(e) =>
-                    handleInputChange("description", e.target.value)
+                    handleInputChange("titleSize", parseInt(e.target.value))
                   }
                 />
-              </div> */}
-
-              {/* <div className="content-details-item-block">
-                <label>Color Descripción: </label>
-                <input
-                  type="color"
-                  value={item.descriptionColor}
-                  onChange={(e) =>
-                    handleInputChange("descriptionColor", e.target.value)
-                  }
-                />
-              </div> */}
+              </div>
               <div className="content-details-item-block">
                 <label>Tamaño Borde: </label>
                 <input
@@ -275,10 +315,22 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   placeholder="0,0"
                   value={item.strokeWidth}
                   onChange={(e) =>
-                    handleInputChange("strokeWidth",e.target.value)
+                    handleInputChange("strokeWidth", e.target.value)
                   }
                 />
               </div>
+
+              <div className="content-details-item-block">
+                <label>Tamaño fondo titulo: </label>
+                <input
+                  type="number"
+                  value={item.titleHeight}
+                  onChange={(e) =>
+                    handleInputChange("titleHeight", parseInt(e.target.value))
+                  }
+                />
+              </div>
+
               <div className="content-details-item-block">
                 <label>Borde radius: </label>
                 <input
