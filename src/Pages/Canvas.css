@@ -87,12 +87,12 @@ body {
 }
 
 .info-plantilla input {
-  height: 25px;
+  height: 30px;
   border-radius: 4px;
   margin-bottom: 8px;
   border: none;
   font-family: Arial, Helvetica, sans-serif;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   color: white;
   padding-left: 6px;
@@ -105,12 +105,12 @@ body {
 }
 
 .info-plantilla select {
-  height: 30px;
+  height: 35px;
   padding-left: 6px;
   border-radius: 4px;
   margin-bottom: 8px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   font-family: Arial, Helvetica, sans-serif;
   color: white;
@@ -143,7 +143,7 @@ body {
   background-color: transparent;
   color: white;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.50) 1px 1px 6px, rgba(0, 0, 0, 0.40) 0px 1px 6px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   padding: 6px;
   border-radius: 5px;
   height: fit-content;
@@ -152,7 +152,7 @@ body {
 
 .content-variables {
   padding: 10px;
-  height: 41%;
+  height: 40%;
   overflow: auto;
 }
 
@@ -165,7 +165,7 @@ body {
   justify-content: space-between;
   padding: 8px;
   background-color: transparent;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 6px, rgba(0, 0, 0, 0.40) 0px 1px 6px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   margin-top: 6px;
   border-radius: 5px;
   color: white;
@@ -179,7 +179,7 @@ body {
   color: white;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 6px 10px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 6px 6px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 }
 
 .content-stage {
@@ -226,7 +226,7 @@ body {
   float: right;
   right: 0;
   background-color: var(--Color-coral);
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(138, 138, 138, 0.23) 0px 6px 5px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 6px 5px, rgba(138, 138, 138, 0.23) 0px 6px 5px;
 }
 
 .content-details p {
@@ -240,7 +240,6 @@ body {
 .content-details-item {
   padding: 10px;
   font-size: 13px;
-  /* border: 1px solid #ccc; */
   margin-bottom: 10px;
   box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 6px, rgba(0, 0, 0, 0.40) 0px 1px 6px;
   border-radius: 5px;
@@ -266,7 +265,7 @@ body {
   margin-bottom: 8px;
   border: none;
   font-family: Arial, Helvetica, sans-serif;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   color: white;
   padding-left: 6px;
@@ -280,7 +279,7 @@ body {
   border-radius: 4px;
   margin-bottom: 8px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   font-family: Arial, Helvetica, sans-serif;
   color: white;
@@ -298,7 +297,7 @@ body {
   border-radius: 4px;
   margin-bottom: 8px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   font-family: Arial, Helvetica, sans-serif;
   color: white;
@@ -320,7 +319,7 @@ body {
   margin-bottom: 8px;
   border: none;
   font-family: Arial, Helvetica, sans-serif;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   color: white;
   padding-left: 6px;
@@ -333,7 +332,7 @@ body {
   margin-bottom: 8px;
   border: none;
   font-family: Arial, Helvetica, sans-serif;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   color: white;
   padding-left: 6px;
@@ -348,8 +347,6 @@ body {
   border: none;
   cursor: pointer;
   height: 35px;
-  /* border-radius: 2px;
-  border: 1px solid white; */
 }
 
 .content-details-item-text input[type="color"]::-webkit-color-swatch {
@@ -366,10 +363,8 @@ body {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  width:21%;
+  width:23%;
   height: 35px;
-  /* border-radius: 2px;
-  border: 1px solid white; */
 }
 
 .content-details-item-block input[type="color"]::-webkit-color-swatch {
@@ -387,7 +382,7 @@ body {
   border-radius: 4px;
   margin-bottom: 8px;
   border: none;
-  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+  box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
   background-color: transparent;
   font-family: Arial, Helvetica, sans-serif;
   color: white;
@@ -426,7 +421,7 @@ body {
 
 .content-details-item summary button{
     background-color: #ff1d63;
-    box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 5px, rgba(0, 0, 0, 0.40) 0px 1px 5px;
+    box-shadow: rgba(0, 0, 0, 0.50) 0px 1px 3px, rgba(0, 0, 0, 0.40) 0px 1px 3px;
     border: none;
     border-radius: 2px;
     color: white;
