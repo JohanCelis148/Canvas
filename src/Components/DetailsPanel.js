@@ -69,14 +69,12 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               <div className="content-details-item-text1">
                 <label></label>
                 <select
-                  value={item.titleAlign}
-                  onChange={(e) =>
-                    handleInputChange("titleAlign", e.target.value)
-                  }
+                  value={item.align}
+                  onChange={(e) => handleInputChange("align", e.target.value)}
                 >
-                  <option value="normal">Normal</option>
-                  <option value="italic">Italic</option>
-                  <option value="bold">Negrita</option>
+                  <option value="left">Izquierda</option>
+                  <option value="center">Centerar</option>
+                  <option value="right">Derecha</option>
                 </select>
               </div>
               <div className="content-details-item-text">
@@ -98,6 +96,105 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                     value={item.textColor}
                     onChange={(e) =>
                       handleInputChange("textColor", e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="content-details-item-text">
+                <div className="content-details-item-textsub">
+                  <label>X: </label>
+                  <input
+                    type="number"
+                    value={item.x}
+                    onChange={(e) =>
+                      handleInputChange("x", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+                <div className="content-details-item-textsub">
+                  <label>Y: </label>
+                  <input
+                    type="number"
+                    value={item.y}
+                    onChange={(e) =>
+                      handleInputChange("y", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="content-details-item-text">
+                <div className="content-details-item-textsub">
+                  <label>Ancho: </label>
+                  <input
+                    type="number"
+                    value={item.width}
+                    onChange={(e) =>
+                      handleInputChange("width", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+                <div className="content-details-item-textsub">
+                  <label>Alto: </label>
+                  <input
+                    type="number"
+                    value={item.height}
+                    onChange={(e) =>
+                      handleInputChange("height", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
+            </>
+          )}
+
+          {item.type === "watermark" && (
+            <>
+              <div className="content-details-item-text1">
+                <label>Texto: </label>
+                <input
+                  type="text"
+                  value={item.text}
+                  onChange={(e) => handleInputChange("text", e.target.value)}
+                />
+              </div>
+              <div className="content-details-item-text1">
+                <label>Fuente: </label>
+                <select
+                  value={item.fontFamily}
+                  onChange={(e) =>
+                    handleInputChange("fontFamily", e.target.value)
+                  }
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Courier New">Courier New</option>
+                </select>
+              </div>
+              <div className="content-details-item-text1">
+                <label></label>
+                <select
+                  value={item.fontStyle}
+                  onChange={(e) =>
+                    handleInputChange("fontStyle", e.target.value)
+                  }
+                >
+                  <option value="normal">Normal</option>
+                  <option value="italic">Italic</option>
+                  <option value="bold">Negrita</option>
+                </select>
+              </div>
+              <div className="content-details-item-text">
+                <div className="content-details-item-textsub">
+                  <label>Tamaño: </label>
+                  <input
+                    type="number"
+                    value={item.fontSize}
+                    onChange={(e) =>
+                      handleInputChange("fontSize", parseInt(e.target.value))
                     }
                   />
                 </div>
@@ -143,6 +240,21 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   <option value="bold">Negrita</option>
                 </select>
               </div>
+
+              <div className="content-details-item-block">
+                <label></label>
+                <select
+                  value={item.titleAlign}
+                  onChange={(e) =>
+                    handleInputChange("titleAlign", e.target.value)
+                  }
+                >
+                  <option value="left">Izquierda</option>
+                  <option value="center">Centrado</option>
+                  <option value="right">Derecha</option>
+                </select>
+              </div>
+
               <div className="content-details-item-block">
                 <label>Color Titulo: </label>
                 <input
@@ -150,6 +262,84 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   value={item.titleColor}
                   onChange={(e) =>
                     handleInputChange("titleColor", e.target.value)
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Fondo titulo: </label>
+                <input
+                  type="color"
+                  value={item.titleFill}
+                  onChange={(e) =>
+                    handleInputChange("titleFill", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="content-details-item-block">
+                <label>Fondo sección: </label>
+                <input
+                  type="color"
+                  value={item.fillColor}
+                  onChange={(e) =>
+                    handleInputChange("fillColor", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="content-details-item-block">
+                <label>Tamaño titulo: </label>
+                <input
+                  type="number"
+                  value={item.titleSize}
+                  onChange={(e) =>
+                    handleInputChange("titleSize", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Tamaño Borde: </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min={0.1}
+                  placeholder="0,0"
+                  value={item.strokeWidth}
+                  onChange={(e) =>
+                    handleInputChange("strokeWidth", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="content-details-item-block">
+                <label>Alto titulo: </label>
+                <input
+                  type="number"
+                  value={item.titleHeight}
+                  onChange={(e) =>
+                    handleInputChange("titleHeight", parseInt(e.target.value))
+                  }
+                />
+              </div>
+
+              <div className="content-details-item-block">
+                <label>Borde radius: </label>
+                <input
+                  type="number"
+                  value={item.borderRadius}
+                  min={0}
+                  onChange={(e) =>
+                    handleInputChange("borderRadius", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Color Borde: </label>
+                <input
+                  type="color"
+                  value={item.strokeColor}
+                  onChange={(e) =>
+                    handleInputChange("strokeColor", e.target.value)
                   }
                 />
               </div>
@@ -179,9 +369,12 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                 <label>Tamaño Borde: </label>
                 <input
                   type="number"
+                  step="0.1"
+                  min={0.1}
+                  placeholder="0,0"
                   value={item.strokeWidth}
                   onChange={(e) =>
-                    handleInputChange("strokeWidth", parseInt(e.target.value))
+                    handleInputChange("strokeWidth", e.target.value)
                   }
                 />
               </div>
@@ -205,6 +398,41 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                     handleInputChange("strokeColor", e.target.value)
                   }
                 />
+              </div>
+              <div className="content-details-item-text">
+                <div className="content-details-item-textsub">
+                  <label>X: </label>
+                  <input
+                    type="number"
+                    value={item.x}
+                    onChange={(e) =>
+                      handleInputChange("x", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+                <div className="content-details-item-textsub">
+                  <label>Y: </label>
+                  <input
+                    type="number"
+                    value={item.y}
+                    onChange={(e) =>
+                      handleInputChange("y", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="content-details-item-text">
+                <div className="content-details-item-textsub">
+                  <label>Ancho: </label>
+                  <input
+                    type="number"
+                    value={item.width}
+                    onChange={(e) =>
+                      handleInputChange("width", parseInt(e.target.value))
+                    }
+                  />
+                </div>
               </div>
             </>
           )}
@@ -297,7 +525,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                 />
               </div>
               <div className="content-details-item-block">
-                <label>Tamaño: </label>
+                <label>Tamaño titulo: </label>
                 <input
                   type="number"
                   value={item.titleSize}
@@ -321,7 +549,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
 
               <div className="content-details-item-block">
-                <label>Tamaño fondo titulo: </label>
+                <label>Alto titulo: </label>
                 <input
                   type="number"
                   value={item.titleHeight}
@@ -352,63 +580,99 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 />
               </div>
+              <div className="content-details-item-text">
+                <div className="content-details-item-textsub">
+                  <label>X: </label>
+                  <input
+                    type="number"
+                    value={item.x}
+                    onChange={(e) =>
+                      handleInputChange("x", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+                <div className="content-details-item-textsub">
+                  <label>Y: </label>
+                  <input
+                    type="number"
+                    value={item.y}
+                    onChange={(e) =>
+                      handleInputChange("y", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="content-details-item-text">
+                <div className="content-details-item-textsub">
+                  <label>Ancho: </label>
+                  <input
+                    type="number"
+                    value={item.width}
+                    onChange={(e) =>
+                      handleInputChange("width", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+                <div className="content-details-item-textsub">
+                  <label>Alto: </label>
+                  <input
+                    type="number"
+                    value={item.height}
+                    onChange={(e) =>
+                      handleInputChange("height", parseInt(e.target.value))
+                    }
+                  />
+                </div>
+              </div>
             </>
           )}
-          <div className="content-details-item-text">
-            <div className="content-details-item-textsub">
-              <label>X: </label>
-              <input
-                type="number"
-                value={item.x}
-                onChange={(e) =>
-                  handleInputChange("x", parseInt(e.target.value))
-                }
-              />
-            </div>
-            <div className="content-details-item-textsub">
-              <label>Y: </label>
-              <input
-                type="number"
-                value={item.y}
-                onChange={(e) =>
-                  handleInputChange("y", parseInt(e.target.value))
-                }
-              />
-            </div>
-          </div>
-
-          <div className="content-details-item-text">
-            <div className="content-details-item-textsub">
-              <label>Ancho: </label>
-              <input
-                type="number"
-                value={item.width}
-                onChange={(e) =>
-                  handleInputChange("width", parseInt(e.target.value))
-                }
-              />
-            </div>
-            <div className="content-details-item-textsub">
-              <label>Alto: </label>
-              <input
-                type="number"
-                value={item.height}
-                onChange={(e) =>
-                  handleInputChange("height", parseInt(e.target.value))
-                }
-              />
-            </div>
-          </div>
 
           {item.type === "rect" && (
-            <div className="content-details-item-text1">
-              <label>Relleno: </label>
-              <input
-                type="color"
-                value={item.fillColor}
-                onChange={(e) => handleInputChange("fillColor", e.target.value)}
-              />
-            </div>
+            <>
+              <div className="content-details-item-block">
+                <label>Relleno: </label>
+                <input
+                  type="color"
+                  value={item.fillColor}
+                  onChange={(e) =>
+                    handleInputChange("fillColor", e.target.value)
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Tamaño Borde: </label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min={0.1}
+                  placeholder="0,0"
+                  value={item.strokeWidth}
+                  onChange={(e) =>
+                    handleInputChange("strokeWidth", e.target.value)
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Borde radius: </label>
+                <input
+                  type="number"
+                  value={item.cornerRadius}
+                  min={0}
+                  onChange={(e) =>
+                    handleInputChange("cornerRadius", parseInt(e.target.value))
+                  }
+                />
+              </div>
+              <div className="content-details-item-block">
+                <label>Color Borde: </label>
+                <input
+                  type="color"
+                  value={item.stroke}
+                  onChange={(e) => handleInputChange("stroke", e.target.value)}
+                />
+              </div>
+            </>
           )}
         </div>
       </details>

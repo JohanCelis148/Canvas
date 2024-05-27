@@ -12,6 +12,7 @@ import jsPDF from "jspdf";
 
 const CanvasEditor = () => {
   const [items, setItems] = useState([]);
+  console.log(items);
   const [selectedId, setSelectedId] = useState(null);
   const [expandedPanelId, setExpandedPanelId] = useState(null);
   const [showMargin, setShowMargin] = useState(false);
@@ -41,6 +42,7 @@ const CanvasEditor = () => {
       textColor: "black",
       fontFamily: "Arial",
       fontStyle: "normal",
+      align: "left",
       id: `✎ Elemento ${items.length + 1} : Texto`,
       draggable: true,
       width: "auto",
@@ -50,6 +52,28 @@ const CanvasEditor = () => {
       dragBoundFunc: (pos) => dragBoundFunc(pos, newText.shapeRef.current),
     };
     setItems((prev) => [...prev, newText]);
+  };
+
+  const addWatermark = () => {
+    const newWatermark = {
+      type: "watermark",
+      x: 10,
+      y: 1000,
+      text: "Marca de agua",
+      fontSize: 72,
+      textColor: "#E6E6E6",
+      fontFamily: "Arial",
+      fontStyle: "normal",
+      align: "center",
+      id: `✎ Elemento ${items.length + 1} : Marca de agua`,
+      draggable: true,
+      width: 1200,
+      height: "auto",
+      rotation: "-55",
+      shapeRef: React.createRef(),
+      dragBoundFunc: (pos) => dragBoundFunc(pos, newWatermark.shapeRef.current),
+    };
+    setItems((prev) => [...prev, newWatermark]);
   };
 
   const addRect = () => {
@@ -88,7 +112,7 @@ const CanvasEditor = () => {
       titleAlign: "center",
       titleStyle: "bold",
       fillColor: "",
-      titleFill: "#C9C9C9", // fondo del título
+      titleFill: "#C9C9C9",
       titleHeight: 30,
       id: `⧈ Elemento ${items.length + 1} : Bloque `,
       draggable: true,
@@ -109,6 +133,7 @@ const CanvasEditor = () => {
       strokeWidth: 0.5,
       strokeColor: "#000000",
       title: "Título de la sección",
+      titleSize: 14,
       titleColor: "#000000",
       titleFont: "Arial",
       titleAlign: "center",
@@ -116,6 +141,8 @@ const CanvasEditor = () => {
       descriptionColor: "#4E4E4E",
       description: "Descripción",
       fillColor: "",
+      titleFill: "#C9C9C9",
+      titleHeight: 30,
       id: `⧈ Elemento ${items.length + 1} : Sección `,
       draggable: true,
       shapeRef: React.createRef(),
@@ -210,20 +237,46 @@ const CanvasEditor = () => {
 
   const pixelsPerInch = 96;
   const letterWidthInches = 8.5;
-  const letterHeightInches = 11;
+  const letterHeightInches = 10.9;
   const width = letterWidthInches * pixelsPerInch;
   const height = letterHeightInches * pixelsPerInch;
+
+  // const dragBoundFunc = (pos, node) => {
+  //   let newX = pos.x;
+  //   let newY = pos.y;
+  //   const box = node.getClientRect();
+  //   const offsetX = node.offsetX() ? node.offsetX() : 0;
+  //   const offsetY = node.offsetY() ? node.offsetY() : 0;
+  //   if (box.x < 0) newX = offsetX;
+  //   else if (box.x + box.width > width) newX = width - box.width + offsetX;
+  //   if (box.y < 0) newY = offsetY;
+  //   else if (box.y + box.height > height) newY = height - box.height + offsetY;
+  //   return { x: newX, y: newY };
+  // };
 
   const dragBoundFunc = (pos, node) => {
     let newX = pos.x;
     let newY = pos.y;
     const box = node.getClientRect();
-    const offsetX = node.offsetX() ? node.offsetX() : 0;
-    const offsetY = node.offsetY() ? node.offsetY() : 0;
-    if (box.x < 0) newX = offsetX;
-    else if (box.x + box.width > width) newX = width - box.width + offsetX;
-    if (box.y < 0) newY = offsetY;
-    else if (box.y + box.height > height) newY = height - box.height + offsetY;
+    const offsetX = node.x() - box.x;
+    const offsetY = node.y() - box.y;
+    const nodeWidth = box.width;
+    const nodeHeight = box.height;
+
+    // Comprobación de límites horizontales
+    if (newX < offsetX) {
+      newX = offsetX;
+    } else if (newX + nodeWidth > width + offsetX) {
+      newX = width - nodeWidth + offsetX;
+    }
+
+    // Comprobación de límites verticales
+    if (newY < offsetY) {
+      newY = offsetY;
+    } else if (newY + nodeHeight > height + offsetY) {
+      newY = height - nodeHeight + offsetY;
+    }
+
     return { x: newX, y: newY };
   };
 
@@ -333,6 +386,7 @@ const CanvasEditor = () => {
               <button onClick={addRect}>Rectángulo</button>
               <button onClick={addBlock}>Bloque</button>
               <button onClick={addSection}>Sección</button>
+              <button onClick={addWatermark}>Marca de agua</button>
             </div>
           </div>
           <p>Variables</p>
@@ -436,6 +490,43 @@ const CanvasEditor = () => {
                         }}
                         onDragEnd={(e) => {
                           setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                          updateItem(item.id, {
+                            ...item,
+                            x: e.target.x(),
+                            y: e.target.y(),
+                          });
+                        }}
+                        onTransformEnd={(e) => {
+                          const node = e.target;
+                          updateItem(item.id, {
+                            ...item,
+                            width: Math.max(5, node.width() * node.scaleX()),
+                            height: Math.max(5, node.height() * node.scaleY()),
+                            // rotation: node.rotation(),
+                          });
+                          node.scaleX(1);
+                          node.scaleY(1);
+                        }}
+                      />
+                    );
+                  } else if (item.type === "watermark") {
+                    return (
+                      <Text
+                        key={idx}
+                        {...item}
+                        ref={item.shapeRef}
+                        fill={item.textColor}
+                        onClick={() => {
+                          // setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                        }}
+                        onTap={() => {
+                          // setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                        }}
+                        onDragEnd={(e) => {
+                          // setSelectedId(item.id);
                           setExpandedPanelId(item.id);
                           updateItem(item.id, {
                             ...item,

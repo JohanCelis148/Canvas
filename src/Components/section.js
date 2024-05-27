@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Group, Rect, Text } from 'react-konva';
+import { Group, Rect, Text, Shape } from 'react-konva';
 
 const Block = ({
   x,
@@ -13,12 +13,15 @@ const Block = ({
   onTransformEnd,
   descriptionColor,
   titleColor,
+  titleSize,
   titleFont,
   titleAlign,
   titleStyle,
   borderRadius,
   strokeWidth,
-  strokeColor
+  strokeColor,
+  titleFill,
+  titleHeight,
 }) => {
   const titleRef = useRef();
   const descriptionRef = useRef();
@@ -51,16 +54,33 @@ const Block = ({
         strokeWidth={strokeWidth}
         cornerRadius={borderRadius}
       />
+      <Shape
+        sceneFunc={(context, shape) => {
+          context.beginPath();
+          context.moveTo(0, titleHeight);
+          context.lineTo(0, borderRadius);
+          context.arcTo(0, 0, borderRadius, 0, borderRadius);
+          context.lineTo(width - borderRadius, 0);
+          context.arcTo(width, 0, width, borderRadius, borderRadius);
+          context.lineTo(width, titleHeight);
+          context.closePath();
+          context.fillStrokeShape(shape);
+        }}
+        fill={titleFill}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+      />
       <Text
         ref={titleRef}
         text={title}
-        fontSize={16}
+        fontSize={titleSize}
         fontFamily={titleFont}
         fill={titleColor}
         padding={10}
         width={width}
         align={titleAlign}
         fontStyle={titleStyle}
+        height={titleHeight}
       />
       <Text
         ref={descriptionRef}
