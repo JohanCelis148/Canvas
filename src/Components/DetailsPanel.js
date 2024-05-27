@@ -365,40 +365,6 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 />
               </div>
-              <div className="content-details-item-block">
-                <label>Tamaño Borde: </label>
-                <input
-                  type="number"
-                  step="0.1"
-                  min={0.1}
-                  placeholder="0,0"
-                  value={item.strokeWidth}
-                  onChange={(e) =>
-                    handleInputChange("strokeWidth", e.target.value)
-                  }
-                />
-              </div>
-              <div className="content-details-item-block">
-                <label>Borde radius: </label>
-                <input
-                  type="number"
-                  value={item.borderRadius}
-                  min={0}
-                  onChange={(e) =>
-                    handleInputChange("borderRadius", parseInt(e.target.value))
-                  }
-                />
-              </div>
-              <div className="content-details-item-block">
-                <label>Color Borde: </label>
-                <input
-                  type="color"
-                  value={item.strokeColor}
-                  onChange={(e) =>
-                    handleInputChange("strokeColor", e.target.value)
-                  }
-                />
-              </div>
               <div className="content-details-item-text">
                 <div className="content-details-item-textsub">
                   <label>X: </label>
