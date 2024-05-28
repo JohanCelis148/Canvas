@@ -144,7 +144,7 @@ const CanvasEditor = () => {
       titleHeight: 30,
       fontSizeDescription: 12,
       fontFamilyDescription: "Arial",
-      fontPaddingDescription: 6,
+      fontPaddingDescription: 4,
       fontAlignDescription: "justify",
       id: `⧈ Elemento ${items.length + 1} : Sección `,
       draggable: true,
@@ -311,49 +311,225 @@ const CanvasEditor = () => {
   };
 
   // Funcion para generar estructura HTML
-  const generateHTML = (items) => {
-  const htmlElements = items
-    .map((item) => {
-      console.log(item);
-      switch (item.type) {
-        case "text":
-          return `<div style="position: absolute; width: ${item.width}; height: auto; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily}; font-weight: ${item.fontStyle}; text-align: ${item.align};">${item.text}</div>`;
-        case "rect":
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.stroke}; border-radius: ${item.cornerRadius}px;"></div>`;
-        case "section":
-          return `<div style="position: absolute; heigth: auto; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; border-radius: ${item.borderRadius}px;">
-                    <div style="height: ${item.titleHeight}px; background-color: ${item.titleFill}; border-radius: ${item.borderRadius}px ${item.borderRadius}px 0 0; display: flex; align-items: center; justify-content: ${item.titleAlign}; border-bottom: ${item.strokeWidth}px solid ${item.strokeColor};">
-                      <p style="font-size: ${item.titleSize}px; color: ${item.titleColor}; font-weight: ${item.titleStyle}; font-family: ${item.titleFont};">${item.title}</p>
-                    </div>
-                    <p style="font-size: ${item.fontSizeDescription}px; color: ${item.descriptionColor}; font-family: ${item.fontFamilyDescription}; padding: ${item.fontPaddingDescription}px; text-align: ${item.fontAlignDescription};">${item.description}</p>
-                  </div>`;
-        case "block":
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
-                    <p style="font-size: ${item.fontSizeDescription}px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
-                  </div>`;
-        default:
-          return "";
-      }
-    })
-    .join("");
+  //   const generateHTML = (items) => {
+  //   const htmlElements = items
+  //     .map((item) => {
+  //       console.log(item);
+  //       switch (item.type) {
+  //         case "text":
+  //           return `<div style="position: absolute; width: ${item.width}; height: auto; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily}; font-weight: ${item.fontStyle}; text-align: ${item.align};">${item.text}</div>`;
+  //         case "rect":
+  //           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.stroke}; border-radius: ${item.cornerRadius}px;"></div>`;
+  //         case "section":
+  //           return `<div style="position: absolute; heigth: auto; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; border-radius: ${item.borderRadius}px;">
+  //                     <div style="height: ${item.titleHeight}px; background-color: ${item.titleFill}; border-radius: ${item.borderRadius}px ${item.borderRadius}px 0 0; display: flex; align-items: center; justify-content: ${item.titleAlign}; border-bottom: ${item.strokeWidth}px solid ${item.strokeColor};">
+  //                       <p style="font-size: ${item.titleSize}px; color: ${item.titleColor}; font-weight: ${item.titleStyle}; font-family: ${item.titleFont};">${item.title}</p>
+  //                     </div>
+  //                     <p style="font-size: ${item.fontSizeDescription}px; color: ${item.descriptionColor}; font-family: ${item.fontFamilyDescription}; padding: ${item.fontPaddingDescription}px; text-align: ${item.fontAlignDescription};">${item.description}</p>
+  //                   </div>`;
+  //         case "block":
+  //           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
+  //                     <p style="font-size: ${item.fontSizeDescription}px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
+  //                   </div>`;
+  //         default:
+  //           return "";
+  //       }
+  //     })
+  //     .join("");
 
-  return `<!DOCTYPE html>
+  //   return `<!DOCTYPE html>
+  //   <html>
+  //   <head>
+  //     <title>Generated Report</title>
+  //     <style>
+  //       body, html { margin: 0; height: 100%; width: 100%; overflow: hidden; background-color: gray; }
+  //       #canvas { width: 816px; height: 1056px; background-color: white; }
+  //     </style>
+  //   </head>
+  //   <body>
+  //     <div id="canvas">
+  //       ${htmlElements}
+  //     </div>
+  //   </body>
+  //   </html>`;
+  // };
+
+  const generateHTML = (items) => {
+    let pages = [];
+    let currentPageItems = [];
+    let currentPageHeight = 0;
+    const pageHeight = 1056; // Altura de una página en px
+
+    items.forEach((item) => {
+      // Calculate the total height of the current item
+      const itemHeight = item.height; // For sections, blocks, and other items that have a height
+      const totalHeight = item.y + itemHeight;
+
+      console.log(totalHeight);
+
+      if (currentPageHeight + totalHeight > pageHeight) {
+        // If the current item doesn't fit in the current page, create a new page
+        pages.push(currentPageItems);
+        currentPageItems = [];
+        currentPageHeight = 0;
+      }
+
+      currentPageItems.push(item);
+      currentPageHeight += totalHeight;
+    });
+
+    // Add the last page items
+    if (currentPageItems.length > 0) {
+      pages.push(currentPageItems);
+    }
+
+    const htmlPages = pages
+      .map((pageItems) => {
+        const htmlElements = pageItems
+          .map((item) => {
+            switch (item.type) {
+              case "text":
+                return `
+            <div style="
+              position: absolute;
+              width: ${item.width};
+              left: ${item.x}px;
+              top: ${item.y}px;
+              font-size: ${item.fontSize}px;
+              color: ${item.textColor};
+              font-family: ${item.fontFamily};
+              font-weight: ${item.fontStyle};
+              text-align: ${item.align};
+            ">
+              ${item.text}
+            </div>
+          `;
+              case "rect":
+                return `
+            <div style="
+              position: absolute;
+              left: ${item.x}px;
+              top: ${item.y}px;
+              width: ${item.width}px;
+              height: ${item.height}px;
+              background-color: ${item.fillColor};
+              border: ${item.strokeWidth}px solid ${item.stroke};
+              border-radius: ${item.cornerRadius}px;
+            "></div>
+          `;
+              case "section":
+                return `
+            <div style="
+              position: relative;
+              left: ${item.x}px;
+              top: ${item.y}px;
+              width: ${item.width}px;
+              background-color: ${item.fillColor};
+              border: ${item.strokeWidth}px solid ${item.strokeColor};
+              border-radius: ${item.borderRadius}px;
+            ">
+              <div style="
+                height: ${item.titleHeight}px;
+                background-color: ${item.titleFill};
+                border-radius: ${item.borderRadius}px ${item.borderRadius}px 0 0;
+                display: flex;
+                align-items: center;
+                justify-content: ${item.titleAlign};
+                border-bottom: ${item.strokeWidth}px solid ${item.strokeColor};
+              ">
+                <p style="
+                  font-size: ${item.titleSize}px;
+                  color: ${item.titleColor};
+                  font-weight: ${item.titleStyle};
+                  font-family: ${item.titleFont};
+                ">
+                  ${item.title}
+                </p>
+              </div>
+              <p style="
+                font-size: ${item.fontSizeDescription}px;
+                color: ${item.descriptionColor};
+                font-family: ${item.fontFamilyDescription};
+                margin: ${item.fontPaddingDescription}px;
+                text-align: ${item.fontAlignDescription};
+              ">
+                ${item.description}
+              </p>
+            </div>
+          `;
+              case "block":
+                return `
+            <div style="
+              position: absolute;
+              left: ${item.x}px;
+              top: ${item.y}px;
+              width: ${item.width}px;
+              background-color: ${item.fillColor};
+              border: ${item.strokeWidth}px solid ${item.strokeColor};
+              padding: 10px;
+              box-sizing: border-box;
+              border-radius: ${item.borderRadius}px;
+            ">
+              <p style="
+                font-size: ${item.fontSizeDescription}px;
+                color: ${item.titleColor};
+                font-weight: bold;
+              ">
+                ${item.title}
+              </p>
+            </div>
+          `;
+              default:
+                return "";
+            }
+          })
+          .join("");
+
+        return `
+      <div class="page">
+        ${htmlElements}
+      </div>
+    `;
+      })
+      .join("");
+
+    return `<!DOCTYPE html>
   <html>
   <head>
+    <meta charset="UTF-8">
     <title>Generated Report</title>
     <style>
-      body, html { margin: 0; height: 100%; width: 100%; overflow: hidden; background-color: gray; }
-      #canvas { width: 816px; height: 1056px; background-color: white; position: relative; }
+      body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        background-color: gray;
+      }
+      #canvas {
+        width: 816px;
+        heiht: 1056px;
+        background-color: white;
+        margin: 0 auto;
+      }
+      .page {
+        position: absolute;
+        width: 816px; /* Tamaño carta en px para ancho */
+        height: 1056px; /* Tamaño carta en px para altura */
+        page-break-after: always;
+        break-after: page;
+        background-color: white;
+      }
     </style>
   </head>
   <body>
     <div id="canvas">
-      ${htmlElements}
+      ${htmlPages}
     </div>
   </body>
   </html>`;
-};
-
+  };
 
   // Funcion pra descargar estructura HTML
   const downloadHtmlFile = (html) => {

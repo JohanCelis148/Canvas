@@ -35,7 +35,7 @@ const Block = ({
     const updateHeight = () => {
       const titleHeight = titleRef.current ? titleRef.current.height() : 0;
       const descriptionHeight = descriptionRef.current ? descriptionRef.current.height() : 0;
-      setBlockHeight(titleHeight + descriptionHeight + 10);
+      setBlockHeight(titleHeight + descriptionHeight + 5);
     };
     updateHeight();
   }, [title, description, width]);
