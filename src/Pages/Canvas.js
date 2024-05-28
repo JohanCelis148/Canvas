@@ -142,7 +142,7 @@ const CanvasEditor = () => {
       fillColor: "",
       titleFill: "#C9C9C9",
       titleHeight: 30,
-      fontSizeDescription: 13,
+      fontSizeDescription: 12,
       fontFamilyDescription: "Arial",
       fontPaddingDescription: 6,
       fontAlignDescription: "justify",
@@ -312,45 +312,48 @@ const CanvasEditor = () => {
 
   // Funcion para generar estructura HTML
   const generateHTML = (items) => {
-    const htmlElements = items
-      .map((item) => {
-        console.log(item);
-        if (item.type === "text") {
+  const htmlElements = items
+    .map((item) => {
+      console.log(item);
+      switch (item.type) {
+        case "text":
           return `<div style="position: absolute; width: ${item.width}; height: auto; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily}; font-weight: ${item.fontStyle}; text-align: ${item.align};">${item.text}</div>`;
-        } else if (item.type === "rect") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.stroke}; border-radius: ${item.cornerRadius}px; "></div>`;
-        } else if (item.type === "section") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; border-radius: ${item.borderRadius}px;">
-                      <div style="height: ${item.titleHeight}px; background-color: ${item.titleFill}; border-radius: ${item.borderRadius}px ${item.borderRadius}px 0px 0px; margin-top: -14px;">
-                        <p style="font-size: ${item.titleSize}px; color: ${item.titleColor}; font-weight: ${item.titleStyle}; font-family: ${item.titleFont}; text-align: ${item.titleAlign};">${item.title}</p>
-                      </div>
-                      <p style="font-size: ${item.fontSizeDescription}px; color: ${item.descriptionColor}; font-family: ${item.fontFamilyDescription}; padding: ${item.fontPaddingDescription}; text-align: ${item.fontAlignDescription};">${item.description}</p>
+        case "rect":
+          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.stroke}; border-radius: ${item.cornerRadius}px;"></div>`;
+        case "section":
+          return `<div style="position: absolute; heigth: auto; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; border-radius: ${item.borderRadius}px;">
+                    <div style="height: ${item.titleHeight}px; background-color: ${item.titleFill}; border-radius: ${item.borderRadius}px ${item.borderRadius}px 0 0; display: flex; align-items: center; justify-content: ${item.titleAlign}; border-bottom: ${item.strokeWidth}px solid ${item.strokeColor};">
+                      <p style="font-size: ${item.titleSize}px; color: ${item.titleColor}; font-weight: ${item.titleStyle}; font-family: ${item.titleFont};">${item.title}</p>
+                    </div>
+                    <p style="font-size: ${item.fontSizeDescription}px; color: ${item.descriptionColor}; font-family: ${item.fontFamilyDescription}; padding: ${item.fontPaddingDescription}px; text-align: ${item.fontAlignDescription};">${item.description}</p>
                   </div>`;
-        } else if (item.type === "block") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
-                    <p style="font-size: 16px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
+        case "block":
+          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
+                    <p style="font-size: ${item.fontSizeDescription}px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
                   </div>`;
-        }
-        return "";
-      })
-      .join("");
+        default:
+          return "";
+      }
+    })
+    .join("");
 
-    return `<!DOCTYPE html>
-    <html>
-    <head>
-    <title></title>
+  return `<!DOCTYPE html>
+  <html>
+  <head>
+    <title>Generated Report</title>
     <style>
-      body, html { margin: 0; height: 1056px; width: 816px; overflow: hidden; background-color: gray; }
-      #canvas { width: 816px; height: 1056px; background-color: white; }
+      body, html { margin: 0; height: 100%; width: 100%; overflow: hidden; background-color: gray; }
+      #canvas { width: 816px; height: 1056px; background-color: white; position: relative; }
     </style>
-    </head>
-    <body>
+  </head>
+  <body>
     <div id="canvas">
-    ${htmlElements}
+      ${htmlElements}
     </div>
-    </body>
-    </html>`;
-  };
+  </body>
+  </html>`;
+};
+
 
   // Funcion pra descargar estructura HTML
   const downloadHtmlFile = (html) => {
