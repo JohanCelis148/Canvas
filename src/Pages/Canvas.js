@@ -12,7 +12,6 @@ import jsPDF from "jspdf";
 
 const CanvasEditor = () => {
   const [items, setItems] = useState([]);
-  console.log(items);
   const [selectedId, setSelectedId] = useState(null);
   const [expandedPanelId, setExpandedPanelId] = useState(null);
   const [showMargin, setShowMargin] = useState(false);
@@ -143,10 +142,10 @@ const CanvasEditor = () => {
       fillColor: "",
       titleFill: "#C9C9C9",
       titleHeight: 30,
-      fontSizeDescripcion: 13,
-      fontFamilyDescripcion: "Arial",
-      fontPaddingDescripcion: 10,
-      fontAlignDescripcion: "justify",
+      fontSizeDescription: 13,
+      fontFamilyDescription: "Arial",
+      fontPaddingDescription: 6,
+      fontAlignDescription: "justify",
       id: `⧈ Elemento ${items.length + 1} : Sección `,
       draggable: true,
       shapeRef: React.createRef(),
@@ -241,7 +240,7 @@ const CanvasEditor = () => {
 
   const pixelsPerInch = 96;
   const letterWidthInches = 8.5;
-  const letterHeightInches = 10.9;
+  const letterHeightInches = 11;
   const width = letterWidthInches * pixelsPerInch;
   const height = letterHeightInches * pixelsPerInch;
 
@@ -315,14 +314,17 @@ const CanvasEditor = () => {
   const generateHTML = (items) => {
     const htmlElements = items
       .map((item) => {
+        console.log(item);
         if (item.type === "text") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily};">${item.text}</div>`;
+          return `<div style="position: absolute; width: ${item.width}; height: auto; left: ${item.x}px; top: ${item.y}px; font-size: ${item.fontSize}px; color: ${item.textColor}; font-family: ${item.fontFamily}; font-weight: ${item.fontStyle}; text-align: ${item.align};">${item.text}</div>`;
         } else if (item.type === "rect") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor};"></div>`;
+          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: ${item.height}px; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.stroke}; border-radius: ${item.cornerRadius}px; "></div>`;
         } else if (item.type === "section") {
-          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
-                    <p style="font-size: 16px; color: ${item.titleColor}; font-weight: bold;">${item.title}</p>
-                    <p style="font-size: 14px; color: ${item.descriptionColor}">${item.description}</p>
+          return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; border-radius: ${item.borderRadius}px;">
+                      <div style="height: ${item.titleHeight}px; background-color: ${item.titleFill}; border-radius: ${item.borderRadius}px ${item.borderRadius}px 0px 0px; margin-top: -14px;">
+                        <p style="font-size: ${item.titleSize}px; color: ${item.titleColor}; font-weight: ${item.titleStyle}; font-family: ${item.titleFont}; text-align: ${item.titleAlign};">${item.title}</p>
+                      </div>
+                      <p style="font-size: ${item.fontSizeDescription}px; color: ${item.descriptionColor}; font-family: ${item.fontFamilyDescription}; padding: ${item.fontPaddingDescription}; text-align: ${item.fontAlignDescription};">${item.description}</p>
                   </div>`;
         } else if (item.type === "block") {
           return `<div style="position: absolute; left: ${item.x}px; top: ${item.y}px; width: ${item.width}px; height: auto; background-color: ${item.fillColor}; border: ${item.strokeWidth}px solid ${item.strokeColor}; padding: 10px; box-sizing: border-box; border-radius: ${item.borderRadius}px;">
@@ -336,11 +338,11 @@ const CanvasEditor = () => {
     return `<!DOCTYPE html>
     <html>
     <head>
-    <title>Plantilla</title>
+    <title></title>
     <style>
-    body, html { margin: 0; height: 1056px; ; width: 816px; overflow: hidden; background-color: gray; }
-    #canvas { width: 816px; height: 1056px; background-color: white; position: relative; }
-  </style>
+      body, html { margin: 0; height: 1056px; width: 816px; overflow: hidden; background-color: gray; }
+      #canvas { width: 816px; height: 1056px; background-color: white; }
+    </style>
     </head>
     <body>
     <div id="canvas">

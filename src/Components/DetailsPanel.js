@@ -62,7 +62,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 >
                   <option value="normal">Normal</option>
-                  <option value="italic">Italic</option>
+                  {/* <option value="italic">Italic</option> */}
                   <option value="bold">Negrita</option>
                 </select>
               </div>
@@ -183,7 +183,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 >
                   <option value="normal">Normal</option>
-                  <option value="italic">Italic</option>
+                  {/* <option value="italic">Italic</option> */}
                   <option value="bold">Negrita</option>
                 </select>
               </div>
@@ -236,7 +236,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 >
                   <option value="normal">Normal</option>
-                  <option value="italic">Italic</option>
+                  {/* <option value="italic">Italic</option> */}
                   <option value="bold">Negrita</option>
                 </select>
               </div>
@@ -439,7 +439,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                   }
                 >
                   <option value="normal">Normal</option>
-                  <option value="italic">Italic</option>
+                  {/* <option value="italic">Italic</option> */}
                   <option value="bold">Negrita</option>
                 </select>
               </div>

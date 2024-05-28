@@ -22,6 +22,10 @@ const Block = ({
   strokeColor,
   titleFill,
   titleHeight,
+  fontSizeDescription,
+  fontFamilyDescription,
+  fontPaddingDescription,
+  fontAlignDescription,
 }) => {
   const titleRef = useRef();
   const descriptionRef = useRef();
@@ -31,7 +35,7 @@ const Block = ({
     const updateHeight = () => {
       const titleHeight = titleRef.current ? titleRef.current.height() : 0;
       const descriptionHeight = descriptionRef.current ? descriptionRef.current.height() : 0;
-      setBlockHeight(titleHeight + descriptionHeight + 10); // Add some padding
+      setBlockHeight(titleHeight + descriptionHeight + 10);
     };
     updateHeight();
   }, [title, description, width]);
@@ -85,13 +89,13 @@ const Block = ({
       <Text
         ref={descriptionRef}
         text={description}
-        fontSize={14}
-        fontFamily="Arial"
+        fontSize={fontSizeDescription}
+        fontFamily={fontFamilyDescription}
         fill={descriptionColor}
-        padding={10}
+        padding={fontPaddingDescription}
         width={width}
-        align="justify"
-        y={titleRef.current ? titleRef.current.height() + 5 : 10} // Adjust position based on title height
+        align={fontAlignDescription}
+        y={titleRef.current ? titleRef.current.height() + 5 : 10}
       />
     </Group>
   );
