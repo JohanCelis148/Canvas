@@ -1,12 +1,13 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import CanvasComponent from './Pages/canvas';
+import CanvasEditor from './Pages/Canvas';
+
 
 function App() {
   return (
     <div className="App">
-      <CanvasComponent></CanvasComponent>
+      <CanvasEditor></CanvasEditor>
     </div>
   );
 }
