@@ -385,6 +385,18 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
 
               <div className="content-details-item-block">
+                <label>Color Descripción: </label>
+                <input
+                  type="color"
+                  placeholder="Descripción"
+                  value={item.descriptionColor}
+                  onChange={(e) =>
+                    handleInputChange("descriptionColor", e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="content-details-item-block">
                 <label>Tamaño: </label>
                 <input
                   type="number"
@@ -412,17 +424,7 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
                 />
               </div> */}
 
-              <div className="content-details-item-block">
-                <label>Color Descripción: </label>
-                <input
-                  type="color"
-                  placeholder="Descripción"
-                  value={item.descriptionColor}
-                  onChange={(e) =>
-                    handleInputChange("descriptionColor", e.target.value)
-                  }
-                />
-              </div>
+              
               <div className="content-details-item-text">
                 <div className="content-details-item-textsub">
                   <label>X: </label>

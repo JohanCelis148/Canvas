@@ -161,7 +161,7 @@ const CanvasEditor = () => {
       fillColor: "",
       titleFill: "#C9C9C9",
       titleHeight: 28,
-      fontSizeDescription: 10,
+      fontSizeDescription: 11,
       fontFamilyDescription: "Arial",
       fontPaddingDescription: 4,
       fontAlignDescription: "justify",
