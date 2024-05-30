@@ -355,6 +355,64 @@ const DetailsPanel = ({ item, updateItem, deleteItem, isExpanded }) => {
               </div>
 
               <div className="content-details-item-block">
+                <label>Fuente: </label>
+                <select
+                  value={item.fontFamilyDescription}
+                  onChange={(e) =>
+                    handleInputChange("fontFamilyDescription", e.target.value)
+                  }
+                >
+                  <option value="Arial">Arial</option>
+                  <option value="Verdana">Verdana</option>
+                  <option value="Helvetica">Helvetica</option>
+                  <option value="Times New Roman">Times New Roman</option>
+                  <option value="Courier New">Courier New</option>
+                </select>
+              </div>
+
+              <div className="content-details-item-block">
+                <label></label>
+                <select
+                  value={item.fontAlignDescription}
+                  onChange={(e) =>
+                    handleInputChange("fontAlignDescription", e.target.value)
+                  }
+                >
+                  <option value="left">Izquierda</option>
+                  <option value="center">Centrado</option>
+                  <option value="justify">Justificado</option>
+                </select>
+              </div>
+
+              <div className="content-details-item-block">
+                <label>Tamaño: </label>
+                <input
+                  type="number"
+                  value={item.fontSizeDescription}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "fontSizeDescription",
+                      parseInt(e.target.value)
+                    )
+                  }
+                />
+              </div>
+
+              {/* <div className="content-details-item-block">
+                <label>Margen: </label>
+                <input
+                  type="number"
+                  value={item.fontPaddingDescription}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "fontPaddingDescription",
+                      parseInt(e.target.value)
+                    )
+                  }
+                />
+              </div> */}
+
+              <div className="content-details-item-block">
                 <label>Color Descripción: </label>
                 <input
                   type="color"
