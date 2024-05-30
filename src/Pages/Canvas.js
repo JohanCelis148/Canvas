@@ -31,6 +31,24 @@ const CanvasEditor = () => {
   const zoomOut = () => setScale((prev) => Math.max(prev * 0.9, minScale));
   const resetZoom = () => setScale(1);
 
+  // Función para comprobar si hay una marca de agua en el arreglo
+  const hasWatermark = (items) => {
+    return items.some((item) => item.type === "watermark");
+  };
+
+  const handleAddWatermark = () => {
+    if (hasWatermark(items)) {
+      Swal.fire({
+        text: "Ya existe una marca de agua.",
+        width: 300,
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#0c77bf",
+      });
+    }else {
+      addWatermark();
+    }
+  };
+
   const addText = () => {
     const newText = {
       type: "text",
@@ -61,6 +79,7 @@ const CanvasEditor = () => {
       text: "Marca de agua",
       fontSize: 72,
       textColor: "#E6E6E6",
+      // textColor: "#BDBDBD",
       fontFamily: "Arial",
       fontStyle: "normal",
       align: "center",
@@ -319,37 +338,37 @@ const CanvasEditor = () => {
     const pageHeight = 1056; // Altura de una página en px, correspondiente a papel tamaño carta
 
     items.forEach((item) => {
-        const itemHeight = item.height;
+      const itemHeight = item.height;
 
-        // Verifica si el elemento actual excede la altura de la página actual
-        if (currentPageHeight + itemHeight > pageHeight) {
-            // Si excede, agrega la página actual a la lista de páginas y comienza una nueva
-            pages.push(currentPageItems);
-            currentPageItems = [];
-            accumulatedHeight += currentPageHeight; // Actualiza la altura acumulada
-            currentPageHeight = 0;
-        }
+      // Verifica si el elemento actual excede la altura de la página actual
+      if (currentPageHeight + itemHeight > pageHeight) {
+        // Si excede, agrega la página actual a la lista de páginas y comienza una nueva
+        pages.push(currentPageItems);
+        currentPageItems = [];
+        accumulatedHeight += currentPageHeight; // Actualiza la altura acumulada
+        currentPageHeight = 0;
+      }
 
-        // Calcula la posición 'y' relativa, ajustando por la altura acumulada de las páginas anteriores
-        const relativeY = item.y - accumulatedHeight;
+      // Calcula la posición 'y' relativa, ajustando por la altura acumulada de las páginas anteriores
+      const relativeY = item.y - accumulatedHeight;
 
-        // Agrega el elemento actual a la página actual con la posición 'y' ajustada
-        currentPageItems.push({ ...item, y: relativeY });
-        currentPageHeight += itemHeight; // Actualiza la altura de la página actual
+      // Agrega el elemento actual a la página actual con la posición 'y' ajustada
+      currentPageItems.push({ ...item, y: relativeY });
+      currentPageHeight += itemHeight; // Actualiza la altura de la página actual
     });
 
     // No olvides añadir la última página si hay elementos restantes
     if (currentPageItems.length > 0) {
-        pages.push(currentPageItems);
+      pages.push(currentPageItems);
     }
 
     const htmlPages = pages
-        .map((pageItems) => {
-            const htmlElements = pageItems
-                .map((item) => {
-                    switch (item.type) {
-                        case "text":
-                            return `
+      .map((pageItems) => {
+        const htmlElements = pageItems
+          .map((item) => {
+            switch (item.type) {
+              case "text":
+                return `
                                 <div style="
                                   position: absolute;
                                   width: ${item.width};
@@ -364,8 +383,8 @@ const CanvasEditor = () => {
                                   ${item.text}
                                 </div>
                   `;
-                        case "rect":
-                            return `
+              case "rect":
+                return `
                         <div style="
                           position: absolute;
                           left: ${item.x}px;
@@ -377,8 +396,8 @@ const CanvasEditor = () => {
                           border-radius: ${item.cornerRadius}px;
                         "></div>
                   `;
-                        case "section":
-                            return `
+              case "section":
+                return `
                         <div style="
                           position: relative;
                           left: ${item.x}px;
@@ -417,8 +436,8 @@ const CanvasEditor = () => {
                           </p>
                         </div>
                   `;
-                        case "block":
-                            return `
+              case "block":
+                return `
                             <div style="
                             position: absolute;
                             left: ${item.x}px;
@@ -449,19 +468,39 @@ const CanvasEditor = () => {
                             </div>
                           </div>
                   `;
-                        default:
-                            return "";
-                    }
-                })
-                .join("");
+              case "watermark":
+                return `
+                <p style="
+                  font-size: ${item.fontSize}px;
+                  color: ${item.textColor};
+                  width: ${item.width}px;
+                  height: fit-content;
+                  font-weight: ${item.fontStyle};
+                  font-family: ${item.fontFamily};
+                  transform: rotate(${item.rotation}deg) translate(-52%, -50%);
+                  text-align: center;
+                  position: absolute;
+                  top: 40%;
+                  left: 50%;
+                  transform-origin: top left;
+                  z-index: 0;
+                  opacity: 60%;
+              ">
+                  ${item.text}
+              </p>`;
+              default:
+                return "";
+            }
+          })
+          .join("");
 
-            return `
+        return `
           <div class="page">
             ${htmlElements}
           </div>
         `;
-        })
-        .join("");
+      })
+      .join("");
 
     return `<!DOCTYPE html>
       <html>
@@ -499,8 +538,7 @@ const CanvasEditor = () => {
         </div>
       </body>
       </html>`;
-};
-
+  };
 
   // // Funcion para generar estructura HTML
   // const generateHTML = (items) => {
@@ -549,7 +587,7 @@ const CanvasEditor = () => {
   //   </body>
   //   </html>`;
   // };
-    
+
   //Funtion 2
   // const generateHTML = (items) => {
   //   const htmlElements = items.map((item) => {
@@ -643,8 +681,6 @@ const CanvasEditor = () => {
   //   </html>`;
   // };
 
-  
-
   // Funcion pra descargar estructura HTML
   const downloadHtmlFile = (html) => {
     const blob = new Blob([html], { type: "text/html" });
@@ -685,7 +721,9 @@ const CanvasEditor = () => {
               <button onClick={addRect}>Rectángulo</button>
               <button onClick={addBlock}>Bloque</button>
               <button onClick={addSection}>Sección</button>
-              <button onClick={addWatermark}>Marca de agua</button>
+              <button onClick={handleAddWatermark}>
+                Marca de agua
+              </button>
             </div>
           </div>
           <p>Variables</p>
@@ -739,6 +777,59 @@ const CanvasEditor = () => {
                 }
               }}
             >
+              <Layer>
+                {items
+                  .filter((item) => item.type === "watermark")
+                  .map((item, idx) => (
+                    <>
+                      <Text
+                        key={idx}
+                        {...item}
+                        ref={item.shapeRef}
+                        fill={item.textColor}
+                        opacity={0.3}
+                        listening={false} // para que no interfiera con los eventos
+                      />
+
+                      <Text
+                        key={idx}
+                        {...item}
+                        ref={item.shapeRef}
+                        fill={item.textColor}
+                        onClick={() => {
+                          // setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                        }}
+                        onTap={() => {
+                          // setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                        }}
+                        onDragEnd={(e) => {
+                          // setSelectedId(item.id);
+                          setExpandedPanelId(item.id);
+                          updateItem(item.id, {
+                            ...item,
+                            x: e.target.x(),
+                            y: e.target.y(),
+                          });
+                        }}
+                        onTransformEnd={(e) => {
+                          const node = e.target;
+                          updateItem(item.id, {
+                            ...item,
+                            width: Math.max(5, node.width() * node.scaleX()),
+                            height: Math.max(5, node.height() * node.scaleY()),
+                            // rotation: node.rotation(),
+                          });
+                          node.scaleX(1);
+                          node.scaleY(1);
+                        }}
+                        listening={false}
+                      />
+                    </>
+                  ))}
+              </Layer>
+
               <Layer ref={layerRef}>
                 {showMargin && (
                   <Rect
@@ -789,43 +880,6 @@ const CanvasEditor = () => {
                         }}
                         onDragEnd={(e) => {
                           setSelectedId(item.id);
-                          setExpandedPanelId(item.id);
-                          updateItem(item.id, {
-                            ...item,
-                            x: e.target.x(),
-                            y: e.target.y(),
-                          });
-                        }}
-                        onTransformEnd={(e) => {
-                          const node = e.target;
-                          updateItem(item.id, {
-                            ...item,
-                            width: Math.max(5, node.width() * node.scaleX()),
-                            height: Math.max(5, node.height() * node.scaleY()),
-                            // rotation: node.rotation(),
-                          });
-                          node.scaleX(1);
-                          node.scaleY(1);
-                        }}
-                      />
-                    );
-                  } else if (item.type === "watermark") {
-                    return (
-                      <Text
-                        key={idx}
-                        {...item}
-                        ref={item.shapeRef}
-                        fill={item.textColor}
-                        onClick={() => {
-                          // setSelectedId(item.id);
-                          setExpandedPanelId(item.id);
-                        }}
-                        onTap={() => {
-                          // setSelectedId(item.id);
-                          setExpandedPanelId(item.id);
-                        }}
-                        onDragEnd={(e) => {
-                          // setSelectedId(item.id);
                           setExpandedPanelId(item.id);
                           updateItem(item.id, {
                             ...item,
